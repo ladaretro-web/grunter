@@ -710,6 +710,29 @@
     // ===== Emoji sets =====
     const PROFILE_EMOJIS = ["💨","💀","🤢","😈","🧨"];
     const FEED_REACTIONS = ["💨","😂","😭","🤢","🔥","⚡","😈","🧨"]; // 8 as requested
+    const NPC_ARENA = [
+      {
+        name: "Air Biscuit",
+        title: "Archduke of Air Biscuits",
+        emoji: "💨",
+        audio: "npc/npc_air_biscuit.mp3",
+        line: "A suspicious breeze enters the arena."
+      },
+      {
+        name: "Barking Spider",
+        title: "Baron of Barking Spiders",
+        emoji: "🕷️",
+        audio: "npc/npc_barking_spider.mp3",
+        line: "Nobody saw it, everyone heard it."
+      },
+      {
+        name: "Cheek Squeak",
+        title: "Duke of Cheek Squeaks",
+        emoji: "😈",
+        audio: "npc/npc_cheek_squeak.mp3",
+        line: "Small noise, big allegations."
+      }
+    ];
 
     function uuidv4(){
       const c = (window.crypto && window.crypto.getRandomValues) ? window.crypto : null;
@@ -1259,6 +1282,39 @@ const closeOpponent = document.getElementById("closeOpponent");
       });
 
       return controller;
+    }
+
+    function renderNpcArena(){
+      arenaGrid.innerHTML = "";
+      NPC_ARENA.forEach(npc=>{
+        const card = document.createElement("div");
+        card.className = "card grid";
+
+        const header = document.createElement("div");
+        header.className = "row";
+        header.innerHTML = `
+          <div class="avatar">${npc.emoji}</div>
+          <div style="flex:1">
+            <div class="name">${escapeHtml(npc.name)}</div>
+            <div class="muted">${escapeHtml(npc.title)}</div>
+          </div>
+        `;
+        card.appendChild(header);
+
+        const line = document.createElement("div");
+        line.className = "tiny";
+        line.textContent = npc.line;
+        card.appendChild(line);
+
+        const player = createArcadePlayer(npc.audio);
+        player.onPlay = ()=>{
+          if(currentAudioController && currentAudioController !== player) currentAudioController.pause();
+          currentAudioController = player;
+        };
+        card.appendChild(player.el);
+
+        arenaGrid.appendChild(card);
+      });
     }
 
     // ===== Profile UI =====
@@ -1891,7 +1947,8 @@ console.log("renderArena battle resolved", battle);
 
         arenaTitle.textContent = "The dust has settled. Who is next?";
         arenaSub.textContent = "Best of five, first to 3 wins.";
-        arenaTiny.textContent = "";
+        arenaTiny.textContent = "The NPCs are warming up the room.";
+        renderNpcArena();
         return;
       }
 
