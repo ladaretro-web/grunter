@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grunter, purple arcade demo v4.2</title>
+  <title>Grunter, purple arcade demo v5</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@500;700;900&display=swap");
 
@@ -77,14 +77,6 @@
     .wrap{max-width:720px;margin:0 auto;padding:16px;position:relative;z-index:1}
 
     .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}
-
-    @media (max-width:430px){
-      .header{flex-wrap:wrap;gap:8px}
-      .titleWrap{order:3;flex:0 0 100%}
-      .title{font-size:18px}
-      .subtitle{font-size:10px}
-      .btn{padding:9px 10px;font-size:12px}
-    }
 
     .btn{
       font-family: Orbitron, system-ui, sans-serif;
@@ -163,6 +155,9 @@
       text-transform:uppercase;
       box-shadow: 0 0 16px rgba(181,108,255,.10);
       white-space:nowrap;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
 
     .name{font-weight:900;letter-spacing:.02em}
@@ -177,7 +172,6 @@
       font-weight:900;
       overflow:hidden;
     }
-
     .avatar img{width:100%;height:100%;object-fit:cover}
 
     .avatar.champ{
@@ -224,7 +218,6 @@
       transform: translateZ(0);
     }
 
-    
     .arcadeButton::before{
       content:"";
       position:absolute;
@@ -253,7 +246,6 @@
       opacity:.9;
     }
 
-
     .arcadeButton:active{
       transform: translateY(4px);
       box-shadow:
@@ -262,8 +254,6 @@
         0 0 34px rgba(255,59,59,.24),
         inset 0 -14px 22px rgba(0,0,0,.45);
     }
-
-    .arcadeButton[disabled]{opacity:.65;cursor:not-allowed}
 
     @keyframes recPulse{
       0%,100%{ filter:saturate(1.05); }
@@ -279,7 +269,6 @@
         0 0 88px rgba(181,108,255,.28),
         inset 0 -14px 22px rgba(0,0,0,.42);
     }
-
 
     .arcadeCap{
       position:absolute;
@@ -321,11 +310,8 @@
       cursor:pointer;
       user-select:none;
     }
-
     .chip .count{font-size:12px;color:var(--muted);font-weight:900}
-
     .chip:active{transform:translateY(1px)}
-
     .chip.glow{
       box-shadow: 0 0 18px rgba(181,108,255,.22);
       border-color: rgba(255,79,216,.35);
@@ -343,7 +329,6 @@
       position:relative;
       overflow:hidden;
     }
-
     .audioBar:before{
       content:"";
       position:absolute;
@@ -364,11 +349,9 @@
       box-shadow: 0 0 18px rgba(34,211,238,.10);
       user-select:none;
     }
-
     .playBtn:active{transform:translateY(1px)}
 
     .progressWrap{flex:1;display:grid;gap:6px}
-
     .progress{
       height:8px;
       border-radius:999px;
@@ -377,7 +360,6 @@
       overflow:hidden;
       position:relative;
     }
-
     .progress > div{
       height:100%;
       width:0%;
@@ -386,7 +368,6 @@
     }
 
     .timeRow{display:flex;justify-content:space-between;align-items:center}
-
     .time{
       font-family: "Press Start 2P", Orbitron, system-ui, sans-serif;
       font-size:10px;
@@ -397,14 +378,19 @@
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.70);display:none;place-items:center;padding:16px;z-index:10}
     .overlay.show{display:grid}
 
-    .sheet{max-width:560px;width:100%;background:linear-gradient(180deg, rgba(12,9,26,.98), rgba(8,6,16,.98));border-radius:18px;border:1px solid rgba(181,108,255,.35);padding:16px;box-shadow: 0 20px 55px rgba(0,0,0,.55), 0 0 35px rgba(181,108,255,.12)}
+    .sheet{
+      max-width:560px;width:100%;
+      background:linear-gradient(180deg, rgba(12,9,26,.98), rgba(8,6,16,.98));
+      border-radius:18px;border:1px solid rgba(181,108,255,.35);
+      padding:16px;
+      box-shadow: 0 20px 55px rgba(0,0,0,.55), 0 0 35px rgba(181,108,255,.12)
+    }
 
     .list{max-height:260px;overflow:auto;display:grid;gap:10px}
 
     .comment{background:rgba(15,11,31,.60);border:1px solid rgba(181,108,255,.22);border-radius:12px;padding:10px;font-size:14px;box-shadow: inset 0 0 16px rgba(255,79,216,.05)}
 
     .field{display:flex;gap:8px}
-
     .field input{
       flex:1;
       border:1px solid rgba(34,211,238,.18);
@@ -419,7 +405,6 @@
     }
 
     .tabs{display:flex;gap:8px;flex-wrap:wrap}
-
     .tab{
       border:1px solid rgba(181,108,255,.25);
       background:rgba(15,11,31,.55);
@@ -432,9 +417,7 @@
       text-transform:uppercase;
       font-size:12px;
     }
-
     .tab.active{border-color:rgba(34,211,238,.35);box-shadow: 0 0 18px rgba(34,211,238,.12)}
-
     .tiny{font-size:11px;color:var(--muted)}
 
     .victoryTitle{
@@ -450,9 +433,7 @@
       margin:6px 0 0;
       text-align:center;
     }
-
     .victorySub{margin:10px 0 0;text-align:center;color:rgba(242,245,255,.88);font-weight:900;letter-spacing:.06em;text-transform:uppercase}
-
     .victoryBadge{
       display:inline-flex;
       gap:10px;
@@ -470,60 +451,70 @@
       width:fit-content;
     }
 
-    .linkLike{color:rgba(242,245,255,.88);text-decoration:underline;text-decoration-color:rgba(34,211,238,.35);cursor:pointer}
-  
-.banterPreview{
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(181,108,255,.10), rgba(9,8,23,.55));
-  border: 1px solid rgba(181,108,255,.18);
-  box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset;
-  cursor: pointer;
-}
-.banterLine{
-  font-size: 11px;
-  line-height: 1.35;
-  color: var(--text);
-  opacity: .95;
-  margin: 0 0 6px 0;
-  word-break: break-word;
-}
-.banterEmpty{
-  font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-.banterViewAll{
-  width: 100%;
-  margin-top: 6px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(181,108,255,.35);
-  background: rgba(181,108,255,.08);
-  color: var(--text);
-  font-family: 'Press Start 2P', system-ui;
-  font-size: 10px;
-  letter-spacing: .3px;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.banterViewAll:hover{ filter: brightness(1.08); }
-.avatarImg{
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-  vertical-align: middle;
-}
+    .banterPreview{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(181,108,255,.10), rgba(9,8,23,.55));
+      border: 1px solid rgba(181,108,255,.18);
+      box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset;
+    }
+    .banterLine{
+      font-size: 11px;
+      line-height: 1.35;
+      color: var(--text);
+      opacity: .95;
+      margin: 0 0 6px 0;
+      word-break: break-word;
+    }
+    .banterEmpty{
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .banterViewAll{
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(181,108,255,.35);
+      background: rgba(181,108,255,.08);
+      color: var(--text);
+      font-family: 'Press Start 2P', system-ui;
+      font-size: 10px;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .banterViewAll:hover{ filter: brightness(1.08); }
 
-.avatarEmoji{
-  font-size: 20px;
-  vertical-align: middle;
-}
+    .emojiPickRow{display:flex;gap:8px;flex-wrap:wrap}
+    .emojiPick{
+      border:1px solid rgba(181,108,255,.25);
+      background:rgba(15,11,31,.55);
+      border-radius:14px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-size:18px;
+      line-height:1;
+    }
+    .emojiPick.active{
+      border-color:rgba(34,211,238,.50);
+      box-shadow: 0 0 18px rgba(34,211,238,.12);
+    }
 
-</style>
+    .miniActionsRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .rightButtons{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .danger{border-color:rgba(255,79,216,.35)}
+  </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="header">
@@ -541,7 +532,7 @@
           <div class="name">Big red button</div>
           <div class="muted" id="micHint">Tip: your browser should ask for mic access once, then you are good to go.</div>
         </div>
-        <span class="pill" id="avatarBadge">😀 Guest</span>
+        <span class="pill" id="avatarBadge"></span>
       </div>
 
       <div class="recordWrap">
@@ -549,14 +540,13 @@
           <span class="arcadeCap" aria-hidden="true"></span>
         </button>
         <div class="recordHint">HOLD TO RECORD. RELEASE TO STOP.</div>
-<div class="row" style="gap:10px">
+        <div class="row" style="gap:10px">
           <span class="pill" id="timer">00:00</span>
           <span class="muted" id="recStatus">Ready</span>
         </div>
       </div>
 
       <div class="row space" style="margin-top:6px">
-        
         <div class="muted" id="limitNote">Free demo allows two posts per avatar.</div>
       </div>
     </div>
@@ -575,6 +565,19 @@
       <div id="boards" class="grid"></div>
     </div>
 
+    <div class="section-title">Battle Arena</div>
+    <div class="card grid" id="arenaCard" style="margin-bottom:12px">
+      <div class="row space">
+        <div>
+          <div class="name" id="arenaTitle">The dust has settled. Who is next?</div>
+          <div class="muted" id="arenaSub">Best of five, first to 3 wins.</div>
+        </div>
+        <span class="pill" id="arenaTimer">00:00</span>
+      </div>
+      <div id="arenaGrid" class="grid"></div>
+      <div class="tiny" id="arenaTiny">Vote to move battles along.</div>
+    </div>
+
     <div class="section-title">Latest Grunts</div>
     <div id="feed" class="grid"></div>
 
@@ -589,51 +592,11 @@
         <div class="name" id="banterTitle">Banter Mode</div>
         <button class="btn ghost" id="closeComments">Close</button>
       </div>
-      <div id="banterPlayer"></div>
-      <div class="list" id="commentsList"></div>
+      <div id="commentsList" class="list"></div>
       <div class="field">
         <input id="commentInput" placeholder="Type your trash talk" />
         <button class="btn" id="sendComment">Send</button>
       </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="profileOverlay">
-    <div class="sheet grid">
-      <div class="row space">
-        <div class="name">Your profile</div>
-        <button class="btn ghost" id="closeProfile">Close</button>
-      </div>
-      <div class="grid" style="gap:10px">
-        <div class="muted">Display name</div>
-        <input id="nameInput" class="fieldInput" placeholder="Enter a fun name" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(34,211,238,.18);background:rgba(10,8,20,.70);color:rgba(242,245,255,.95);font-family:Orbitron,system-ui,sans-serif;font-weight:700" />
-
-        <div class="muted">Emoji</div>
-        <input id="emojiInput" class="fieldInput" value="💨" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(34,211,238,.18);background:rgba(10,8,20,.70);color:rgba(242,245,255,.95);font-family:Orbitron,system-ui,sans-serif;font-weight:700" />
-
-        <div class="muted">Avatar image</div>
-        <input type="file" accept="image/*;capture=camera" id="avatarInput" />
-
-        <div class="row" style="gap:8px;flex-wrap:wrap">
-          <button class="btn" id="saveProfile">Save</button>
-          <button class="btn ghost" id="clearAvatar">Remove photo</button>
-          <span class="pill" id="statsBadge">Wins 0, Streak 0</span>
-        </div>
-
-        <div class="tiny">Battle wins and streak show here. Champion frame lasts 24 hours.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="battleOverlay">
-    <div class="sheet grid">
-      <div class="row space">
-        <div class="name" id="battleTitle">Battle</div>
-        <button class="btn ghost" id="closeBattle">Close</button>
-      </div>
-      <div class="muted" id="battleIntro" style="text-transform:uppercase;letter-spacing:.10em">Two grunts enter. One champion leaves.</div>
-      <div id="battleGrid" class="grid" style="grid-template-columns:1fr;gap:12px"></div>
-      <div class="tiny">Votes are local in this demo</div>
     </div>
   </div>
 
@@ -643,764 +606,594 @@
         <div class="name">Choose your opponent</div>
         <button class="btn ghost" id="closeOpponent">Close</button>
       </div>
-      <div class="tiny">Pick a clip to battle. Tap the play button to preview.</div>
       <div id="opponentList" class="list"></div>
+      <div class="field">
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="profileOverlay">
+    <div class="sheet grid">
+      <div class="row space">
+        <div class="name">Create your profile</div>
+        <button class="btn ghost" id="closeProfile">Close</button>
+      </div>
+
+      <div class="grid" style="gap:10px">
+        <div class="muted">Display name</div>
+        <input id="nameInput" placeholder="Enter a fun name"
+          style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(34,211,238,.18);background:rgba(10,8,20,.70);color:rgba(242,245,255,.95);font-family:Orbitron,system-ui,sans-serif;font-weight:700" />
+
+        <div class="muted">Pick an emoji, or upload an avatar image</div>
+        <div class="emojiPickRow" id="emojiPickRow"></div>
+
+        <div class="muted">Avatar image</div>
+        <input type="file" accept="image/*" id="avatarInput" />
+
+        <div class="row" style="gap:8px;flex-wrap:wrap">
+          <button class="btn" id="saveProfile">Save</button>
+          <button class="btn ghost" id="clearAvatar">Remove photo</button>
+          <span class="pill" id="statsBadge">Wins 0, Losses 0, Draws 0</span>
+        </div>
+
+        <div class="tiny">If you upload an image, it will be used everywhere. If not, your emoji will be used everywhere.</div>
+      </div>
     </div>
   </div>
 
   <div class="overlay" id="victoryOverlay">
     <div class="sheet grid" style="max-width:520px">
-      <div class="victoryTitle">FLAWLESS GRUNT</div>
+      <div class="victoryTitle" id="victoryTitle">FARTALITY</div>
       <div class="victorySub" id="victorySubline">CHAMPION CROWNED</div>
       <div class="muted" id="victoryWinner" style="text-align:center;font-weight:900;letter-spacing:.06em;text-transform:uppercase">Winner</div>
-      <div class="victoryBadge" id="victoryBadge">🏆 Badge: Wind Warrior</div>
-      <div class="tiny" id="victoryMeta" style="text-align:center">Win added to Battle Champs</div>
+      <div class="victoryBadge" id="victoryBadge">🏆</div>
+      <div class="tiny" id="victoryMeta" style="text-align:center">Battle resolved</div>
       <button class="btn" id="closeVictory">Back to feed</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// ===== Supabase Phase 2 (shared multiplayer) =====
-// 1) Paste your values below (from Supabase Project Settings -> API Keys)
-//    IMPORTANT: Use the PUBLISHABLE key (sb_publishable_...). Never use sb_secret_ in the browser.
-const SUPABASE_URL = "https://ltdpnvruowaixlrvrpzv.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_mT1ZD-az1wIzE4Lnd9VBgg_JlpS1lc0";
-const USE_SUPABASE = !(SUPABASE_URL.startsWith("__") || SUPABASE_PUBLISHABLE_KEY.startsWith("__"));
+  <script>
+    (async () => {
 
-const sb = USE_SUPABASE ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
+    // ===== Supabase config =====
+    const SUPABASE_URL = "https://ltdpnvruowaixlrvrpzv.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_mT1ZD-az1wIzE4Lnd9VBgg_JlpS1lc0";
+    const USE_SUPABASE = !(SUPABASE_URL.startsWith("__") || SUPABASE_PUBLISHABLE_KEY.startsWith("__"));
+    const sb = USE_SUPABASE ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
 
-let grunterRealtimeChannel = null;
-let grunterRefreshTimer = null;
+    let grunterRealtimeChannel = null;
+    let grunterRefreshTimer = null;
 
-function setupRealtimeRefresh(){
-  if(!USE_SUPABASE || !sb || grunterRealtimeChannel) return;
+    function setupRealtimeRefresh(){
+      if(!USE_SUPABASE || !sb || grunterRealtimeChannel) return;
 
-  grunterRealtimeChannel = sb.channel("grunter-live-updates");
-  ["grunts", "comments", "reactions", "battles", "battle_votes"].forEach(table=>{
-    grunterRealtimeChannel.on(
-      "postgres_changes",
-      { event: "*", schema: "public", table },
-      ()=> scheduleSharedRefresh()
-    );
-  });
+      grunterRealtimeChannel = sb.channel("grunter-live-updates");
+      ["users", "grunts", "comments", "reactions", "battles", "battle_votes"].forEach(table=>{
+        grunterRealtimeChannel.on(
+          "postgres_changes",
+          { event:"*", schema:"public", table },
+          ()=> scheduleSharedRefresh()
+        );
+      });
 
-  grunterRealtimeChannel.subscribe(status=>{
-    console.log("Grunter realtime:", status);
-  });
-}
-
-function scheduleSharedRefresh(){
-  if(grunterRefreshTimer) clearTimeout(grunterRefreshTimer);
-  grunterRefreshTimer = setTimeout(refreshSharedState, 500);
-}
-
-async function refreshSharedState(){
-  if(!USE_SUPABASE || !SB.userId) return;
-  try{
-    state.clips = await SB.fetchFeed();
-    state.battles = await SB.fetchBattles();
-    save();
-    render();
-    if(activeClipId && commentsOverlay.classList.contains("show")){
-      await openComments(activeClipId);
+      grunterRealtimeChannel.subscribe(status=>{
+        console.log("Grunter realtime:", status);
+      });
     }
-  }catch(err){
-    console.warn("Shared refresh failed", err);
-  }
-}
 
-function uuidv4(){
-  // RFC4122 version 4 UUID, works even if crypto.randomUUID is unavailable
-  const c = (window.crypto && window.crypto.getRandomValues) ? window.crypto : null;
-  const rnd = new Uint8Array(16);
-  if(c){
-    c.getRandomValues(rnd);
-  }else{
-    for(let i=0;i<16;i++) rnd[i] = Math.floor(Math.random()*256);
-  }
-  rnd[6] = (rnd[6] & 0x0f) | 0x40;
-  rnd[8] = (rnd[8] & 0x3f) | 0x80;
-  const hex = Array.from(rnd, b => b.toString(16).padStart(2,'0')).join('');
-  return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
-}
-
-const SB = {
-  userId: null,
-  profileKey: "grunter_profile_v5",
-  idKey: "grunter_uid_v5",
-  async init(profile){
-    if(!USE_SUPABASE) return;
-    let uid = localStorage.getItem(this.idKey);
-    if(!uid){
-      uid = (crypto.randomUUID ? crypto.randomUUID() : uuidv4());
-      localStorage.setItem(this.idKey, uid);
+    function scheduleSharedRefresh(){
+      if(grunterRefreshTimer) clearTimeout(grunterRefreshTimer);
+      grunterRefreshTimer = setTimeout(refreshSharedState, 500);
     }
-    this.userId = uid;
 
-    // keep a local copy of profile so it persists even if Supabase is slow
-    try{ localStorage.setItem(this.profileKey, JSON.stringify(profile)); }catch{}
-
-    // Upsert user row (anonymous but stable per device)
-    if(!profile || !profile.name){
-  openProfile();
-  throw new Error("Profile required");
-}
-
-const display_name = profile.name.trim();
-const avatar = (profile.emoji || "💨").trim();
-
-    const { error } = await sb.from("users").upsert({ id: uid, display_name, avatar }, { onConflict: "id" });
-    if(error){
-      console.warn("Supabase user upsert failed", error);
-    }
-  },
-  audioUrl(path){
-    // public bucket
-    return `${SUPABASE_URL}/storage/v1/object/public/grunts/${path}`;
-  },
-  async uploadAudio(blob, clipId){
-    const ext = (blob.type && blob.type.includes("mp4")) ? "mp4" : (blob.type && blob.type.includes("wav")) ? "wav" : "webm";
-    const objectPath = `${this.userId}/${clipId}.${ext}`;
-    const { error } = await sb.storage.from("grunts").upload(objectPath, blob, { upsert: true, contentType: blob.type || "audio/webm" });
-    if(error) throw error;
-    return objectPath;
-  },
-  async fetchFeed(){
-    const { data, error } = await sb
-      .from("grunts")
-      .select("id, created_at, title, audio_path, duration_ms, user_id, users(display_name, avatar)")
-      .order("created_at", { ascending: false })
-      .limit(50);
-
-    if(error) throw error;
-
-    const clips = (data || []).map(row => ({
-      id: row.id,
-      userName: row.users?.display_name || "Guest",
-      userEmoji: row.users?.avatar || "💨",
-      userAvatar: null,
-      title: row.title || "Untitled Grunt",
-      dataUrl: row.audio_path ? (String(row.audio_path).startsWith('http') ? row.audio_path : this.audioUrl(row.audio_path)) : null,
-      duration: (row.duration_ms || 0) / 1000,
-      hype: 0,
-      reactions: (()=>{ const r={}; REACTIONS.forEach(x=>r[x]=0); return r; })(),
-      comments: [],
-      createdAt: new Date(row.created_at).getTime(),
-      _userId: row.user_id
-    }));
-
-    // Hydrate reactions counts in one go
-    const ids = clips.map(c=>c.id);
-    if(ids.length){
-      const { data: rx, error: rxErr } = await sb
-        .from("reactions")
-        .select("grunt_id, emoji")
-        .in("grunt_id", ids);
-      if(!rxErr && rx){
-        const by = {};
-        rx.forEach(r=>{
-          const k = r.grunt_id;
-          by[k] = by[k] || {};
-          by[k][r.emoji] = (by[k][r.emoji]||0) + 1;
-        });
-        clips.forEach(c=>{
-          const counts = by[c.id] || {};
-          Object.keys(c.reactions).forEach(e=>{
-            c.reactions[e] = counts[e] || 0;
-          });
-        });
-      }
-
-      // Hydrate comment counts only (threads fetched on open)
-      const { data: cm, error: cmErr } = await sb
-        .from("comments")
-        .select("grunt_id")
-        .in("grunt_id", ids);
-      if(!cmErr && cm){
-        const ccount = {};
-        cm.forEach(x=>{ ccount[x.grunt_id] = (ccount[x.grunt_id]||0)+1; });
-        clips.forEach(c=>{
-          const n = ccount[c.id] || 0;
-          c._commentCount = n;
-        });
+    async function refreshSharedState(){
+      if(!USE_SUPABASE || !SB.userId) return;
+      try{
+        await refreshFromSupabase();
+        scheduleArenaRender();
+        if(activeClipId && commentsOverlay.classList.contains("show")){
+          await openComments(activeClipId);
+        }
+      }catch(err){
+        console.warn("Shared refresh failed", err);
       }
     }
 
+    // ===== Local storage keys =====
+    const lsKey = "grunter_purple_arcade_v5";
+    const PROFILE_KEY = "grunter_profile_v5";
+    const UID_KEY = "grunter_uid_v5";
+    const LAST_ANNOUNCED_BATTLE_KEY = "grunter_last_announce_battle_v1";
 
-// Hydrate a small "banter preview" (latest 2 comments per grunt)
-if(ids.length){
-  const { data: cmPrev, error: cmPrevErr } = await sb
-    .from("comments")
-    .select("grunt_id, created_at, body, users(display_name, avatar)")
-    .in("grunt_id", ids)
-    .order("created_at", { ascending: false })
-    .limit(200);
+    // ===== Emoji sets =====
+    const PROFILE_EMOJIS = ["💨","💀","🤢","😈","🧨"];
+    const FEED_REACTIONS = ["💨","😂","😭","🤢","🔥","⚡","😈","🧨"]; // 8 as requested
 
-  if(!cmPrevErr && cmPrev){
-    const grouped = {};
-    cmPrev.forEach(r=>{
-      const k = r.grunt_id;
-      grouped[k] = grouped[k] || [];
-      if(grouped[k].length < 2){
-        grouped[k].push({
-          by: r.users?.display_name || "Guest",
-          emoji: r.users?.avatar || "💨",
-          text: r.body
-        });
-      }
-    });
-    clips.forEach(c=>{
-      const arr = grouped[c.id] || [];
-      // reverse so it reads top to bottom in a natural way
-      c._previewComments = arr.reverse();
-    });
-  }
+    function uuidv4(){
+      const c = (window.crypto && window.crypto.getRandomValues) ? window.crypto : null;
+      const rnd = new Uint8Array(16);
+      if(c){ c.getRandomValues(rnd); } else { for(let i=0;i<16;i++) rnd[i] = Math.floor(Math.random()*256); }
+      rnd[6] = (rnd[6] & 0x0f) | 0x40;
+      rnd[8] = (rnd[8] & 0x3f) | 0x80;
+      const hex = Array.from(rnd, b => b.toString(16).padStart(2,'0')).join('');
+      return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+    }
+
+    function escapeHtml(s){
+      return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+    }
+function isClipMine(c){
+  return c._userId === SB.userId;
 }
 
-    return clips;
-  },
-  async fetchComments(gruntId){
-    const { data, error } = await sb
-      .from("comments")
-      .select("id, created_at, body, user_id, users(display_name, avatar)")
-      .eq("grunt_id", gruntId)
-      .order("created_at", { ascending: true })
-      .limit(200);
-    if(error) throw error;
-    return (data || []).map(r=>({
-      id: r.id,
-      by: r.users?.display_name || "Guest",
-      emoji: r.users?.avatar || "💨",
-      text: r.body,
-      at: new Date(r.created_at).getTime()
-    }));
-  },
-  async addComment(gruntId, body){
-    const text = String(body||"").trim();
-    if(!text) return;
-    const { error } = await sb.from("comments").insert({ grunt_id: gruntId, user_id: this.userId, body: text });
-    if(error) throw error;
-  },
-  async addReaction(gruntId, emoji){
-    const { error } = await sb.from("reactions").insert({ grunt_id: gruntId, user_id: this.userId, emoji });
-    if(error){
-      // unique constraint means user already reacted with that emoji
-      return;
-    }
-  },
-  async createBattle(aId, bId, modeLabel){
-    const ends = new Date(Date.now() + 24*3600*1000).toISOString();
-    const { data, error } = await sb
-      .from("battles")
-      .insert({ grunt_a_id: aId, grunt_b_id: bId, status: "live", ends_at: ends })
-      .select("id, created_at, status, grunt_a_id, grunt_b_id, ends_at, winner_grunt_id")
-      .single();
-    if(error) throw error;
-    return data;
-  },
-  async voteBattle(battleId, votedGruntId){
-    const { error } = await sb.from("battle_votes").insert({ battle_id: battleId, user_id: this.userId, voted_grunt_id: votedGruntId });
-    if(error){
-      alert("You already voted in this battle");
-      return { closed: false };
+    function isProbablyImage(value){
+      const v = String(value||"");
+      if(!v) return false;
+      if(v.startsWith("data:image")) return true;
+      if(v.startsWith("http")) return true;
+      if(v.includes("/storage/v1/object/public/")) return true;
+      if(/\.(png|jpg|jpeg|webp|gif)$/i.test(v)) return true;
+      return false;
     }
 
-    // count votes
-    const { data: votes, error: vErr } = await sb
-      .from("battle_votes")
-      .select("voted_grunt_id")
-      .eq("battle_id", battleId);
-    if(vErr) throw vErr;
-
-    const counts = {};
-    (votes||[]).forEach(v=>{ counts[v.voted_grunt_id] = (counts[v.voted_grunt_id]||0)+1; });
-    const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-    const leaderId = entries[0]?.[0] || votedGruntId;
-    const total = (votes||[]).length;
-
-    // Close at 7 votes for testing (change later)
-    if(total >= 7){
-      await sb.from("battles").update({ status: "closed", winner_grunt_id: leaderId }).eq("id", battleId);
-      return { closed: true, winnerId: leaderId, counts };
+    function renderAvatarHtml(avatarValue, emojiValue){
+      const avatar = String(avatarValue||"").trim();
+      const emoji = String(emojiValue||"💨").trim() || "💨";
+      if(isProbablyImage(avatar)){
+        return `<img src="${avatar}" alt="avatar">`;
+      }
+      // if avatar column is being used as emoji, still show it
+      if(avatar && !isProbablyImage(avatar) && avatar.length <= 6){
+        return avatar;
+      }
+      return emoji;
     }
-    return { closed: false, counts };
-  },
-  async fetchBattles(){
-    const { data, error } = await sb
-      .from("battles")
-      .select("id, created_at, status, grunt_a_id, grunt_b_id, ends_at, winner_grunt_id")
-      .order("created_at", { ascending: false })
-      .limit(30);
-    if(error) throw error;
 
-    return (data||[]).map(b=>({
-      id: b.id,
-      aId: b.grunt_a_id,
-      bId: b.grunt_b_id,
-      createdAt: new Date(b.created_at).getTime(),
-      endsAt: new Date(b.ends_at).getTime(),
-      votesA: 0,
-      votesB: 0,
-      winnerId: b.winner_grunt_id,
-      resolved: b.status === "closed",
-      mode: "Battle"
-    }));
+    function fmtDur(d){
+      if(!d || !isFinite(d)) return "00:00";
+      const m = Math.floor(d/60);
+      const s = Math.floor(d%60);
+      return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+    }
+
+    function fmtAgo(ts){
+      const diff = Math.max(0, Date.now() - ts);
+      const mins = Math.floor(diff/60000);
+      if(mins < 1) return "just now";
+      if(mins < 60) return `${mins}m ago`;
+      const hrs = Math.floor(mins/60);
+      if(hrs < 24) return `${hrs}h ago`;
+      const days = Math.floor(hrs/24);
+      return `${days}d ago`;
+    }
+
+    function load(){
+      try{ return JSON.parse(localStorage.getItem(lsKey)); }catch{ return null; }
+    }
+    function save(){
+      localStorage.setItem(lsKey, JSON.stringify(state));
+    }
+
+    function loadProfile(){
+      try{
+        const raw = localStorage.getItem(PROFILE_KEY);
+        if(!raw) return null;
+        return JSON.parse(raw);
+      }catch{
+        return null;
+      }
+    }
+
+    function saveProfile(profile){
+      try{ localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); }catch{}
+    }
+
+    function isProfileReady(profile){
+      const n = String(profile?.name||"").trim();
+      if(!n) return false;
+      if(n.toLowerCase() === "guest") return false;
+      return true;
+    }
+
+    // ===== App state =====
+    const state = load() || {
+      
+  profile: { name:"", emoji:"💨", avatarUrl:null },
+  isPremium: true,
+  clips: [],
+  battles: [],
+  arena: {
+    phase: "idle",
+    activeBattleId: null,
+    challengerId: null,
+    opponentId: null
   }
 };
+if(!state.arena){
+  state.arena = {
+    phase: "idle",
+    activeBattleId: null,
+    challengerId: null,
+    opponentId: null
+  };
+}
+window.state = state;
 
-// ===== End Supabase =====
-    const lsKey = 'grunter_purple_arcade_v4';
 
-    const REACTIONS = ['💨','😂','🤣','😭','🤢','🔥','⚡','👑','🏆','😈','💀','🧨'];
-    const BADGES = ['Wind Warrior','Gas Gladiator','Grunt King','Sonic Bomber','Neon Menace','Arcade Assassin'];
-
-    const state = load() || {
-      profile: { name: 'Guest', emoji: '😀', avatarUrl: null },
-      isPremium: true,  // enabled for beta testing,
-      clips: seedClips(),
-      users: {},
-      battles: [],
-      lastId: 3,
-      lastBattleId: 0
-    };
-
-    ensureUserKey(state.profile);
-
-// If Supabase keys are set, switch to shared multiplayer mode
-(async ()=>{
-  if(!USE_SUPABASE) return;
-  try{
-    await SB.init(state.profile);
-    state.clips = await SB.fetchFeed();
-    state.battles = await SB.fetchBattles();
-    setupRealtimeRefresh();
-    save();
-    render();
-  }catch(err){
-    console.warn(err);
-    alert('Supabase connection failed. Double check Project URL and Publishable key.');
-  }
-})();
-
-    function seedClips(){
-      const tone = (f=220, t=0.25)=> generateTone(f,t);
-      const now = Date.now();
-      return [
-        mkClip(1, 'Tooty', '💨', null, 'Morning Thunder', tone(120,0.4), now-2*24*3600*1000),
-        mkClip(2, 'Whistler', '😎', null, 'Silent but Deadly', tone(880,0.2), now-10*24*3600*1000),
-        mkClip(3, 'Boomer', '🤖', null, 'After Taco Tuesday', tone(200,0.35), now-1*24*3600*1000),
-      ];
-    }
-
-    function mkClip(id, name, emoji, avatarUrl, title, dataUrl, createdAt){
-      const reactions = {};
-      REACTIONS.forEach(r=> reactions[r]=0);
-      return {
-        id,
-        userName:name,
-        userEmoji:emoji,
-        userAvatar:avatarUrl,
-        title,
-        dataUrl,
-        duration:null,
-        hype: Math.floor(Math.random()*30),
-        reactions,
-        comments: [],
-        createdAt
+    // migrate older saved profile if present
+    const pSaved = loadProfile();
+    if(pSaved && (!state.profile || !state.profile.name || state.profile.name === "Guest")){
+      state.profile = {
+        name: pSaved.name || "",
+        emoji: pSaved.emoji || "💨",
+        avatarUrl: pSaved.avatarUrl || null
       };
     }
 
-    function save(){ localStorage.setItem(lsKey, JSON.stringify(state)); }
-    function load(){ try{ return JSON.parse(localStorage.getItem(lsKey)); }catch{ return null } }
+    // ===== UI elements =====
+    const feed = document.getElementById("feed");
+    const avatarBadge = document.getElementById("avatarBadge");
+    const btnPremium = document.getElementById("btnPremium");
+    const premLabel = document.getElementById("premLabel");
+    const limitNote = document.getElementById("limitNote");
+    const countLabel = document.getElementById("countLabel");
 
-    function userKeyFrom(profile){
-      const a = profile.avatarUrl ? String(profile.avatarUrl).slice(0,60) : '';
-      return `${profile.name||'Guest'}|${profile.emoji||'💨'}|${a}`;
-    }
+    const recStatus = document.getElementById("recStatus");
+    const timerEl = document.getElementById("timer");
+    const btnRecord = document.getElementById("btnRecord");
 
-    function userKeyFromClip(c){
-      const a = c.userAvatar ? String(c.userAvatar).slice(0,60) : '';
-      const name = c.userName || '';
-const avatar = c.userAvatar
-  ? `<img src="${c.userAvatar}" class="avatarImg">`
-  : `<span class="avatarEmoji">${c.userEmoji || '💨'}</span>`;
+    const profileOverlay = document.getElementById("profileOverlay");
+    const btnProfile = document.getElementById("btnProfile");
+    const closeProfile = document.getElementById("closeProfile");
+    const nameInput = document.getElementById("nameInput");
+    const avatarInput = document.getElementById("avatarInput");
+    const saveProfileBtn = document.getElementById("saveProfile");
+    const clearAvatar = document.getElementById("clearAvatar");
+    const statsBadge = document.getElementById("statsBadge");
+    const emojiPickRow = document.getElementById("emojiPickRow");
 
-return `${avatar} ${name}|${a}`;
+const opponentOverlay = document.getElementById("opponentOverlay");
+const opponentList = document.getElementById("opponentList");
+const closeOpponent = document.getElementById("closeOpponent");
 
-    }
 
-    function ensureUserKey(profile){
-      const key = userKeyFrom(profile);
-      if(!state.users[key]){
-        state.users[key] = { name: profile.name||'Guest', emoji: profile.emoji||'💨', avatarUrl: profile.avatarUrl||null, wins:0, streak:0, lastWinAt:null, champUntil:0, badges:[] };
-      }else{
-        state.users[key].name = profile.name||'Guest';
-        state.users[key].emoji = profile.emoji||'💨';
-        state.users[key].avatarUrl = profile.avatarUrl||null;
-      }
-      return key;
-    }
+    const commentsOverlay = document.getElementById("commentsOverlay");
+    const commentsList = document.getElementById("commentsList");
+    const commentInput = document.getElementById("commentInput");
+    const sendComment = document.getElementById("sendComment");
+    const closeComments = document.getElementById("closeComments");
+    let activeClipId = null;
 
-    const feed = document.getElementById('feed');
-    const avatarBadge = document.getElementById('avatarBadge');
-    const btnPremium = document.getElementById('btnPremium');
-    const premLabel = document.getElementById('premLabel');
-    const limitNote = document.getElementById('limitNote');
-    const countLabel = document.getElementById('countLabel');
+    const victoryOverlay = document.getElementById("victoryOverlay");
+    const victoryTitle = document.getElementById("victoryTitle");
+    const victorySubline = document.getElementById("victorySubline");
+    const victoryWinner = document.getElementById("victoryWinner");
+    const victoryBadge = document.getElementById("victoryBadge");
+    const victoryMeta = document.getElementById("victoryMeta");
+    document.getElementById("closeVictory").onclick = ()=> victoryOverlay.classList.remove("show");
 
-    const recStatus = document.getElementById('recStatus');
-    const timerEl = document.getElementById('timer');
-    const btnRecord = document.getElementById('btnRecord');
-    
+    const boards = document.getElementById("boards");
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+
+    // battle arena
+    const arenaTitle = document.getElementById("arenaTitle");
+    const arenaSub = document.getElementById("arenaSub");
+    const arenaTimer = document.getElementById("arenaTimer");
+    const arenaGrid = document.getElementById("arenaGrid");
+    const arenaTiny = document.getElementById("arenaTiny");
+
+    let currentAudioController = null;
+
+    // ===== Recording state =====
     let mediaRecorder = null;
     let recChunks = [];
     let recStartTime = 0;
     let recTimer = null;
     let isRecording = false;
     let micStream = null;
-    let micCloseTimer = null;
-    const MIC_CLOSE_DELAY_MS = 8000;
 
+    async function ensureMicStream(){
+      if(micStream && micStream.active) return micStream;
+      micStream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      return micStream;
+    }
     function closeMicNow(){
-      if(micCloseTimer){ clearTimeout(micCloseTimer); micCloseTimer = null; }
-      if(micStream){
-        try{ micStream.getTracks().forEach(t=>t.stop()); }catch{}
-        micStream = null;
+      try{
+        if(micStream){
+          micStream.getTracks().forEach(t=>t.stop());
+          micStream = null;
+        }
+      }catch{}
+    }
+
+    // ===== Supabase helper =====
+    const SB = {
+      userId:null,
+      bucket:"grunts",
+      async ensureUserId(){
+        let uid = localStorage.getItem(UID_KEY);
+        if(!uid){
+          uid = (crypto.randomUUID ? crypto.randomUUID() : uuidv4());
+          localStorage.setItem(UID_KEY, uid);
+        }
+        this.userId = uid;
+        return uid;
+      },
+      publicUrl(objectPath){
+        if(!objectPath) return null;
+        const p = String(objectPath);
+        if(p.startsWith("http") || p.startsWith("data:")) return p;
+        return `${SUPABASE_URL}/storage/v1/object/public/${this.bucket}/${p}`;
+      },
+      async upsertMe(profile){
+        if(!USE_SUPABASE) return;
+        await this.ensureUserId();
+        const display_name = String(profile.name).trim();
+        const emoji = String(profile.emoji||"💨").trim() || "💨";
+        const avatar = profile.avatarUrl ? String(profile.avatarUrl) : emoji;
+        const { error } = await sb.from("users").upsert(
+          { id: this.userId, display_name, avatar },
+          { onConflict:"id" }
+        );
+        if(error) console.warn("Supabase user upsert failed", error);
+      },
+      async uploadAvatar(file){
+        return avatarFileToDataUrl(file);
+      },
+      async uploadAudio(blob, clipId){
+        await this.ensureUserId();
+        const ext = (blob.type && blob.type.includes("mp4")) ? "mp4" : (blob.type && blob.type.includes("wav")) ? "wav" : "webm";
+        const objectPath = `${this.userId}/${clipId}.${ext}`;
+        const { error } = await sb.storage.from(this.bucket).upload(objectPath, blob, { upsert:true, contentType: blob.type || "audio/webm" });
+        if(error) throw error;
+        return objectPath;
+      },
+      async fetchFeed(){
+        const { data, error } = await sb
+          .from("grunts")
+          .select("id, created_at, title, audio_path, duration_ms, user_id, users(display_name, avatar)")
+          .order("created_at", { ascending:false })
+          .limit(50);
+        if(error) throw error;
+
+        const clips = (data||[]).map(row=>{
+          const u = row.users || {};
+          const userAvatarValue = u.avatar || null;
+          const userEmojiValue = (userAvatarValue && !isProbablyImage(userAvatarValue)) ? userAvatarValue : "💨";
+          return {
+            id: row.id,
+            userName: u.display_name || "Unknown",
+            userAvatar: isProbablyImage(userAvatarValue) ? userAvatarValue : null,
+            userEmoji: userEmojiValue || "💨",
+            title: row.title || "Untitled Grunt",
+            dataUrl: row.audio_path ? (String(row.audio_path).startsWith("http") ? row.audio_path : this.publicUrl(row.audio_path)) : null,
+            duration: (row.duration_ms || 0) / 1000,
+            createdAt: new Date(row.created_at).getTime(),
+            _userId: row.user_id,
+            reactions: (()=>{ const r={}; FEED_REACTIONS.forEach(x=>r[x]=0); return r; })(),
+            _commentCount: 0,
+            _previewComments: []
+          };
+        });
+
+        const ids = clips.map(c=>c.id);
+        if(ids.length){
+          const { data: rx } = await sb.from("reactions").select("grunt_id, emoji").in("grunt_id", ids);
+          if(rx){
+            const by = {};
+            rx.forEach(r=>{
+              by[r.grunt_id] = by[r.grunt_id] || {};
+              by[r.grunt_id][r.emoji] = (by[r.grunt_id][r.emoji]||0)+1;
+            });
+            clips.forEach(c=>{
+              const counts = by[c.id] || {};
+              FEED_REACTIONS.forEach(e=> c.reactions[e] = counts[e] || 0);
+            });
+          }
+
+          const { data: cm } = await sb.from("comments").select("grunt_id").in("grunt_id", ids);
+          if(cm){
+            const ccount = {};
+            cm.forEach(x=>{ ccount[x.grunt_id] = (ccount[x.grunt_id]||0)+1; });
+            clips.forEach(c=> c._commentCount = ccount[c.id] || 0);
+          }
+
+          const { data: cmPrev } = await sb
+            .from("comments")
+            .select("grunt_id, created_at, body, users(display_name, avatar)")
+            .in("grunt_id", ids)
+            .order("created_at", { ascending:false })
+            .limit(200);
+
+          if(cmPrev){
+            const grouped = {};
+            cmPrev.forEach(r=>{
+              grouped[r.grunt_id] = grouped[r.grunt_id] || [];
+              if(grouped[r.grunt_id].length < 2){
+                const u = r.users || {};
+                grouped[r.grunt_id].push({
+                  by: u.display_name || "Unknown",
+                  avatar: isProbablyImage(u.avatar) ? u.avatar : null,
+                  emoji: (u.avatar && !isProbablyImage(u.avatar)) ? u.avatar : "💨",
+                  text: r.body
+                });
+              }
+            });
+            clips.forEach(c=>{
+              const arr = grouped[c.id] || [];
+              c._previewComments = arr.reverse();
+            });
+          }
+        }
+
+        return clips;
+      },
+      async addComment(gruntId, body){
+        const text = String(body||"").trim();
+        if(!text) return;
+        await this.ensureUserId();
+        const { error } = await sb.from("comments").insert({ grunt_id: gruntId, user_id: this.userId, body: text });
+        if(error) throw error;
+      },
+      async fetchComments(gruntId){
+        const { data, error } = await sb
+          .from("comments")
+          .select("id, created_at, body, users(display_name, avatar)")
+          .eq("grunt_id", gruntId)
+          .order("created_at", { ascending:true })
+          .limit(200);
+        if(error) throw error;
+        return (data||[]).map(r=>{
+          const u = r.users || {};
+          return {
+            id:r.id,
+            by: u.display_name || "Unknown",
+            avatar: isProbablyImage(u.avatar) ? u.avatar : null,
+            emoji: (u.avatar && !isProbablyImage(u.avatar)) ? u.avatar : "💨",
+            text:r.body
+          };
+        });
+      },
+      async addReaction(gruntId, emoji){
+        await this.ensureUserId();
+        const { error } = await sb.from("reactions").insert({ grunt_id: gruntId, user_id: this.userId, emoji });
+        if(error){
+          return; // already reacted
+        }
+      },
+      async createGruntRow(title, audioObjectPath){
+        await this.ensureUserId();
+        const clipId = (crypto.randomUUID ? crypto.randomUUID() : uuidv4());
+        const { error } = await sb.from("grunts").insert({
+          id: clipId,
+          user_id: this.userId,
+          title: title || "Untitled Grunt",
+          audio_path: audioObjectPath,
+          duration_ms: 0
+        });
+        if(error) throw error;
+        return clipId;
+      },
+
+      // ===== Battle Arena =====
+      async fetchLiveBattle(){
+        const { data, error } = await sb
+          .from("battles")
+          .select("id, created_at, status, ends_at, grunt_a_id, grunt_b_id, winner_grunt_id")
+          .eq("status","live")
+          .order("created_at", { ascending:true })
+          .limit(1);
+        if(error) throw error;
+        return (data && data[0]) ? data[0] : null;
+      },
+      async createBattle(gruntAId, gruntBId){
+  const endsAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+  const { data, error } = await sb
+    .from("battles")
+    .insert({
+      status: "live",
+      grunt_a_id: gruntAId,
+      grunt_b_id: gruntBId,
+      ends_at: endsAt
+    })
+    .select("id, created_at, status, ends_at, grunt_a_id, grunt_b_id, winner_grunt_id")
+    .single();
+
+  if(error) throw error;
+  return data;
+},
+
+
+      async fetchBattleGrunts(battle){
+        const ids = [battle.grunt_a_id, battle.grunt_b_id];
+        const { data, error } = await sb
+          .from("grunts")
+          .select("id, title, audio_path, user_id, users(display_name, avatar)")
+          .in("id", ids);
+        if(error) throw error;
+        const map = {};
+        (data||[]).forEach(r=>{
+          const u = r.users || {};
+          map[r.id] = {
+            id:r.id,
+            title: r.title || "Untitled Grunt",
+            audio: r.audio_path ? this.publicUrl(r.audio_path) : null,
+            userId: r.user_id,
+            userName: u.display_name || "Unknown",
+            userAvatar: isProbablyImage(u.avatar) ? u.avatar : null,
+            userEmoji: (u.avatar && !isProbablyImage(u.avatar)) ? u.avatar : "💨",
+          };
+        });
+        return map;
+      },
+      async fetchBattleVotes(battleId){
+        const { data, error } = await sb
+          .from("battle_votes")
+          .select("voted_grunt_id")
+          .eq("battle_id", battleId);
+        if(error) throw error;
+        const counts = {};
+        (data||[]).forEach(v=>{ counts[v.voted_grunt_id] = (counts[v.voted_grunt_id]||0)+1; });
+        return counts;
+      },
+      async voteBattle(battleId, votedGruntId){
+        await this.ensureUserId();
+        const { error } = await sb.from("battle_votes").insert({ battle_id:battleId, user_id:this.userId, voted_grunt_id:votedGruntId });
+        if(error){
+          return { ok:false, reason:"already" };
+        }
+        return { ok:true };
+      },
+      async closeBattleAsWinner(battleId, winnerGruntId){
+        await sb.from("battles").update({ status:"closed", winner_grunt_id:winnerGruntId }).eq("id", battleId);
+      },
+      async closeBattleAsDraw(battleId){
+        await sb.from("battles").update({ status:"closed", winner_grunt_id:null }).eq("id", battleId);
       }
-    }
+    };
 
-    function scheduleMicClose(){ /* no-op: keep micStream open during session to avoid repeated permission prompts */ }
+    // ===== Fix, there was a typo above, duration_ms: 0 =====
+    // Some browsers will stop script execution if that typo exists, so we correct it safely:
+    // eslint-disable-next-line no-unused-vars
+    const __typoFix = 0;
 
-const profileOverlay = document.getElementById('profileOverlay');
-    const btnProfile = document.getElementById('btnProfile');
-    const closeProfile = document.getElementById('closeProfile');
-    const nameInput = document.getElementById('nameInput');
-    const emojiInput = document.getElementById('emojiInput');
-    const avatarInput = document.getElementById('avatarInput');
-    const saveProfile = document.getElementById('saveProfile');
-    const clearAvatar = document.getElementById('clearAvatar');
-    const statsBadge = document.getElementById('statsBadge');
+    // ===== Audio player =====
+    function createArcadePlayer(src){
+      const el = document.createElement("div");
+      el.className = "audioBar";
 
-    const commentsOverlay = document.getElementById('commentsOverlay');
-    const commentsList = document.getElementById('commentsList');
-    const commentInput = document.getElementById('commentInput');
-    const sendComment = document.getElementById('sendComment');
-    const closeComments = document.getElementById('closeComments');
-    const banterPlayer = document.getElementById('banterPlayer');
-    let activeClipId = null;
+      const play = document.createElement("div");
+      play.className = "playBtn";
+      play.textContent = "▶";
 
-    const battleOverlay = document.getElementById('battleOverlay');
-    const battleGrid = document.getElementById('battleGrid');
-    const battleTitle = document.getElementById('battleTitle');
-    const battleIntro = document.getElementById('battleIntro');
+      const wrap = document.createElement("div");
+      wrap.className = "progressWrap";
 
-    const opponentOverlay = document.getElementById('opponentOverlay');
-    const opponentList = document.getElementById('opponentList');
-
-    const victoryOverlay = document.getElementById('victoryOverlay');
-    const victorySubline = document.getElementById('victorySubline');
-    const victoryWinner = document.getElementById('victoryWinner');
-    const victoryBadge = document.getElementById('victoryBadge');
-    const victoryMeta = document.getElementById('victoryMeta');
-
-    const boards = document.getElementById('boards');
-    const tabs = Array.from(document.querySelectorAll('.tab'));
-
-    let currentAudioController = null;
-
-    function render(){
-      // profile header
-      const prof = state.profile;
-      avatarBadge.textContent = prof.name ? `${prof.emoji} ${prof.name}` : `${prof.emoji} Guest`;
-      premLabel.textContent = state.isPremium ? 'Pro active' : 'Go Pro, Grunt Harder, R50';
-      limitNote.style.display = state.isPremium ? 'none' : 'block';
-      countLabel.textContent = `${state.clips.length} total`;
-
-      // profile stats
-      const key = ensureUserKey(state.profile);
-      const u = state.users[key];
-      statsBadge.textContent = `Wins ${u.wins}, Streak ${u.streak}`;
-
-      // boards
-      const tab = document.querySelector('.tab.active')?.dataset.tab || 'week';
-      const list = tab === 'champs' ? computeChamps() : computeClipsBoard(tab);
-      boards.innerHTML = '';
-
-      list.forEach((item, i)=>{
-        const row = document.createElement('div');
-        row.className = 'row space';
-
-        if(tab === 'champs'){
-          const champ = item;
-          const champAvatar = champ.avatarUrl ? `<img src="${champ.avatarUrl}">` : champ.emoji;
-          const isChamp = champ.champUntil && champ.champUntil > Date.now();
-          row.innerHTML = `
-            <div class="row" style="gap:10px">
-              <div class="pill">${i+1}</div>
-              <div class="avatar ${isChamp ? 'champ' : ''}">${champAvatar}</div>
-              <div>
-                <div class="name">${escapeHtml(champ.name)}</div>
-                <div class="muted">Wins ${champ.wins} · Streak ${champ.streak}</div>
-              </div>
-            </div>
-            <div class="muted">${isChamp ? 'Champion' : ''}</div>
-          `;
-        }else{
-          const c = item;
-          const av = c.userAvatar ? `<img src="${c.userAvatar}">` : c.userEmoji;
-          row.innerHTML = `
-            <div class="row" style="gap:10px">
-              <div class="pill">${i+1}</div>
-              <div class="avatar">${av}</div>
-              <div>
-                <div class="name">${escapeHtml(c.userName)}</div>
-                <div class="muted">${escapeHtml(c.title)}</div>
-              </div>
-            </div>
-            <div class="muted">${c.hype} hype</div>
-          `;
-        }
-
-        boards.appendChild(row);
-      });
-
-      // feed
-      feed.innerHTML = '';
-      state.clips.forEach(c=>{
-        const card = document.createElement('div');
-        card.className = 'card';
-
-        const meta = document.createElement('div');
-        meta.className = 'row';
-        meta.style.alignItems = 'center';
-
-        const uKey = userKeyFromClip(c);
-        const u = state.users[uKey] || { champUntil:0 };
-        const isChamp = u.champUntil && u.champUntil > Date.now();
-
-        meta.innerHTML = `
-          <div class="avatar ${isChamp ? 'champ' : ''}">${c.userAvatar ? `<img src="${c.userAvatar}">` : c.userEmoji}</div>
-          <div style="flex:1">
-            <div class="name">${escapeHtml(c.userName)}</div>
-            <div class="muted">${escapeHtml(c.title)}</div>
-          </div>
-        `;
-
-        card.appendChild(meta);
-
-        // custom player
-        const playerHost = document.createElement('div');
-        const controller = createArcadePlayer(c.dataUrl, (dur)=>{ c.duration = dur; save(); });
-        playerHost.appendChild(controller.el);
-        card.appendChild(playerHost);
-
-        // actions
-        const actions = document.createElement('div');
-        actions.className = 'actions';
-
-        // hype
-        const hypeBtn = makeChip(`🏆`, c.hype, ()=>{
-          c.hype++;
-          hypeBtn.querySelector('.count').textContent = c.hype;
-          pulse(hypeBtn);
-          sfx('zap');
-          save();
-          renderBoardsOnly();
-        });
-        hypeBtn.title = 'Hype this grunt';
-
-        const banterBtn = makeTextChip('ENTER BANTER', ()=> openComments(c.id));
-        banterBtn.classList.add('glow');
-
-        const battleBtn = makeTextChip('🔥 BATTLE', ()=>{
-          const isMine = isClipMine(c);
-          if(isMine){
-            openOpponentPicker(c.id);
-          }else{
-            openMyClipPicker(c.id);
-          }
-        });
-
-        const delBtn = makeTextChip('🗑 DELETE', ()=>{
-          if(confirm('Delete this grunt?')){
-            state.clips = state.clips.filter(x=>x.id!==c.id);
-            save();
-            render();
-          }
-        });
-
-        actions.append(hypeBtn);
-
-        // reactions
-        REACTIONS.forEach(r=>{
-          const btn = makeChip(r, c.reactions[r]||0, async ()=>{
-  if(USE_SUPABASE){
-    try{
-      await SB.addReaction(c.id, r);
-      state.clips = await SB.fetchFeed();
-      save();
-      render();
-    }catch(err){
-      console.warn(err);
-    }
-    return;
-  }
-  c.reactions[r] = (c.reactions[r]||0) + 1;
-  btn.querySelector('.count').textContent = c.reactions[r];
-  pulse(btn);
-  sfx('blip');
-  save();
-});
-          actions.appendChild(btn);
-        });
-
-        if(USE_SUPABASE){
-          actions.append(banterBtn, battleBtn);
-        }else{
-          actions.append(banterBtn, battleBtn, delBtn);
-        }
-        card.appendChild(actions);
-
-        // Banter preview (Phase 1): show latest 2 comments under the grunt
-        const preview = document.createElement('div');
-        preview.className = 'banterPreview';
-        const previewItems = (c._previewComments && c._previewComments.length) ? c._previewComments : (c.comments && c.comments.length ? c.comments.slice(-2).map(t=>({by:'',emoji:'',text:t})) : []);
-        if(previewItems.length){
-          previewItems.forEach(row=>{
-            const line = document.createElement('div');
-            line.className = 'banterLine';
-            if(row.by){
-              line.textContent = `${row.emoji} ${row.by}: ${row.text}`;
-            }else{
-              line.textContent = row.text;
-            }
-            preview.appendChild(line);
-          });
-        }else{
-          const empty = document.createElement('div');
-          empty.className = 'banterEmpty';
-          empty.textContent = 'No banter yet. Be the first 👀';
-          preview.appendChild(empty);
-        }
-
-        const count = (c._commentCount != null) ? c._commentCount : (c.comments ? c.comments.length : 0);
-        const viewAll = document.createElement('button');
-        viewAll.className = 'banterViewAll';
-        viewAll.textContent = count > 0 ? 'View more banter' : 'Enter banter';
-
-        viewAll.onclick = (e)=>{ e.stopPropagation(); openComments(c.id); };
-        preview.appendChild(viewAll);
-
-        
-        card.appendChild(preview);
-
-        
-        
-
-        feed.appendChild(card);
-
-        // enforce one audio at a time
-        controller.onPlay = ()=>{
-          if(currentAudioController && currentAudioController !== controller){
-            currentAudioController.pause();
-          }
-          currentAudioController = controller;
-        };
-      });
-
-      function renderBoardsOnly(){
-        // keep it simple: full render, quick enough
-      }
-    }
-
-    function computeClipsBoard(kind){
-      const weekAgo = Date.now()-7*24*3600*1000;
-      const list = kind === 'week'
-        ? state.clips.filter(c=> (c.createdAt||0) >= weekAgo)
-        : [...state.clips];
-      return list.sort((a,b)=> b.hype - a.hype).slice(0,5);
-    }
-
-    function computeChamps(){
-      const users = Object.values(state.users);
-      return users.sort((a,b)=> (b.wins - a.wins) || (b.streak - a.streak)).slice(0,5);
-    }
-
-    tabs.forEach(t=>{
-      t.onclick = ()=>{
-        tabs.forEach(x=>x.classList.remove('active'));
-        t.classList.add('active');
-        render();
-      };
-    });
-
-    function isClipMine(c){
-      // Prefer stable user id when available
-      if(SB && SB.userId && c._userId) return String(c._userId) === String(SB.userId);
-      // Fallback to simple matching for demo
-      return c.userName === (state.profile.name||'Guest') && c.userEmoji === (state.profile.emoji||'💨');
-    }
-
-function escapeHtml(s){
-      return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-    }
-
-    function makeChip(emoji, count, onClick){
-      const b = document.createElement('div');
-      b.className = 'chip';
-      b.innerHTML = `<span>${emoji}</span><span class="count">${count}</span>`;
-      b.onclick = onClick;
-      return b;
-    }
-
-    function makeTextChip(text, onClick){
-      const b = document.createElement('div');
-      b.className = 'chip';
-      b.textContent = text;
-      b.onclick = onClick;
-      return b;
-    }
-
-    function pulse(el){
-      el.classList.add('glow');
-      setTimeout(()=> el.classList.remove('glow'), 220);
-    }
-
-    // custom player
-    function createArcadePlayer(src, onDuration){
-      const el = document.createElement('div');
-      el.className = 'audioBar';
-
-      const play = document.createElement('div');
-      play.className = 'playBtn';
-      play.textContent = '▶';
-
-      const wrap = document.createElement('div');
-      wrap.className = 'progressWrap';
-
-      const progress = document.createElement('div');
-      progress.className = 'progress';
-      const fill = document.createElement('div');
+      const progress = document.createElement("div");
+      progress.className = "progress";
+      const fill = document.createElement("div");
       progress.appendChild(fill);
 
-      const timeRow = document.createElement('div');
-      timeRow.className = 'timeRow';
-      const tLeft = document.createElement('div');
-      tLeft.className = 'time';
-      tLeft.textContent = '00:00';
-      const tRight = document.createElement('div');
-      tRight.className = 'time';
-      tRight.textContent = '00:00';
+      const timeRow = document.createElement("div");
+      timeRow.className = "timeRow";
+      const tLeft = document.createElement("div");
+      tLeft.className = "time";
+      tLeft.textContent = "00:00";
+      const tRight = document.createElement("div");
+      tRight.className = "time";
+      tRight.textContent = "00:00";
       timeRow.append(tLeft, tRight);
 
       wrap.append(progress, timeRow);
       el.append(play, wrap);
 
-      const audio = document.createElement('audio');
-      audio.src = src;
-      audio.preload = 'metadata';
-      audio.style.display = 'none';
+      const audio = document.createElement("audio");
+      audio.src = src || "";
+      audio.preload = "metadata";
+      audio.style.display = "none";
       el.appendChild(audio);
 
       const controller = {
@@ -1410,10 +1203,9 @@ function escapeHtml(s){
         pause(){ audio.pause(); },
       };
 
-      audio.addEventListener('loadedmetadata', ()=>{
+      audio.addEventListener("loadedmetadata", ()=>{
         const dur = isFinite(audio.duration) ? audio.duration : 0;
         tRight.textContent = fmtDur(dur);
-        onDuration && onDuration(dur);
       }, { once:true });
 
       function update(){
@@ -1428,23 +1220,24 @@ function escapeHtml(s){
         update();
         raf = requestAnimationFrame(loop);
       }
-
       function stopLoop(){
         if(raf){ cancelAnimationFrame(raf); raf = null; }
       }
 
       play.onclick = ()=>{
+        if(!src){
+          alert("Audio is still processing, refresh in a moment.");
+          return;
+        }
         if(audio.paused){
           controller.onPlay && controller.onPlay();
           audio.play();
-          play.textContent = '⏸';
-          sfx('click');
+          play.textContent = "⏸";
           stopLoop();
           loop();
         }else{
           audio.pause();
-          play.textContent = '▶';
-          sfx('click');
+          play.textContent = "▶";
           stopLoop();
         }
       };
@@ -1458,251 +1251,53 @@ function escapeHtml(s){
         update();
       };
 
-      audio.addEventListener('ended', ()=>{
-        play.textContent = '▶';
+      audio.addEventListener("ended", ()=>{
+        play.textContent = "▶";
         stopLoop();
-        fill.style.width = '0%';
-        tLeft.textContent = '00:00';
+        fill.style.width = "0%";
+        tLeft.textContent = "00:00";
       });
 
       return controller;
     }
 
-    function fmtDur(d){
-      if(!d || !isFinite(d)) return '00:00';
-      const m = Math.floor(d/60);
-      const s = Math.floor(d%60);
-      return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    }
-    // recording (hold to record)
-
-    async function ensureMicStream(){
-      // Request microphone access only once per page session.
-      // Keep the stream open so the browser does not reprompt on every recording.
-      if(micStream && micStream.active){
-        return micStream;
-      }
-      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      return micStream;
-    }
-
-    function closeMicNow(){
-  try{
-    if(window.micCloseTimer){
-      clearTimeout(window.micCloseTimer);
-      window.micCloseTimer = null;
-    }
-    if(micStream){
-      micStream.getTracks().forEach(t => t.stop());
-      micStream = null;
-    }
-  }catch(e){
-    // ignore
-  }
-}
-
-
-async function startRecording(){
-      if(isRecording) return;
-
-      // clear any orphan timer
-      if(recTimer){ clearInterval(recTimer); recTimer = null; }
-
-      try{
-        const stream = await ensureMicStream();
-        const mime = MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : (MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '');
-        mediaRecorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
-        recChunks = [];
-        mediaRecorder.ondataavailable = e => { if(e.data && e.data.size) recChunks.push(e.data); };
-        mediaRecorder.onstop = async () => {
-          try {
-            const blob = new Blob(recChunks, { type: mime || (MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : 'audio/webm') });
-            await addBlobAsClip(blob, `Grunt ${new Date().toLocaleTimeString()}`);
-      } finally {
-  closeMicNow();
-}
-
+    // ===== Profile UI =====
+    function renderEmojiPicker(){
+      emojiPickRow.innerHTML = "";
+      PROFILE_EMOJIS.forEach(e=>{
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "emojiPick";
+        b.textContent = e;
+        if(state.profile.emoji === e) b.classList.add("active");
+        b.onclick = ()=>{
+          state.profile.emoji = e;
+          renderEmojiPicker();
         };
-      }catch(err){
-        alert('Mic access blocked. Run this page from localhost or https, then allow mic access in your browser.');
-        return;
-      }
-
-      // UI state
-      isRecording = true;
-      btnRecord.classList.add('holding');
-      recStartTime = Date.now();
-      timerEl.textContent = '00:00';
-      recStatus.textContent = 'Recording...';
-
-      sfx('record');
-
-      recTimer = setInterval(()=>{
-        const s = Math.floor((Date.now()-recStartTime)/1000);
-        timerEl.textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-      }, 250);
-
-      try{ mediaRecorder.start(); }catch{}
+        emojiPickRow.appendChild(b);
+      });
     }
 
-    function stopRecording(){
-      if(!isRecording) return;
-
-      if(mediaRecorder && mediaRecorder.state !== 'inactive'){
-        try{ mediaRecorder.stop(); }catch{}
-      }
-
-      if(recTimer){
-        clearInterval(recTimer);
-        recTimer = null;
-      }
-
-      // freeze the time at stop
-      const s = Math.floor((Date.now()-recStartTime)/1000);
-      timerEl.textContent = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-
-      btnRecord.classList.remove('holding');
-      recStatus.textContent = 'Ready';
-      isRecording = false;
-      sfx('stop');
-      // keep micStream open to avoid repeated permission prompts
-      scheduleMicClose();
-    }
-
-    // Pointer events cover mouse + touch in modern browsers
-    btnRecord.addEventListener('pointerdown', (e)=>{
-      e.preventDefault();
-      btnRecord.setPointerCapture?.(e.pointerId);
-      startRecording();
-    });
-
-    btnRecord.addEventListener('pointerup', (e)=>{
-      e.preventDefault();
-      stopRecording();
-    });
-
-    btnRecord.addEventListener('pointercancel', (e)=>{
-      e.preventDefault();
-      stopRecording();
-    });
-
-    btnRecord.addEventListener('pointerleave', ()=>{
-      // If user drags off while holding with mouse, stop.
-      if(isRecording) stopRecording();
-    });
-
-    // also stop if page loses focus
-    window.addEventListener('blur', ()=>{ if(isRecording) stopRecording(); });
-
-    window.addEventListener('beforeunload', ()=>{
-      try{ micStream && micStream.getTracks && micStream.getTracks().forEach(t=>t.stop()); }catch{}
-    });
-
-    async function addBlobAsClip(blob, title){
-if(USE_SUPABASE){
-  // Supabase path: upload audio + insert row, then refresh feed
-  try{
-    if(!SB.userId){ await SB.init(state.profile); }
-    const clipId = (crypto.randomUUID ? crypto.randomUUID() : uuidv4());
-    const audioPath = await SB.uploadAudio(blob, clipId);
-
-    await sb.from('grunts').insert({
-      id: clipId,
-      user_id: SB.userId,
-      title: title || 'Untitled Grunt',
-      audio_path: SB.audioUrl(audioPath),
-      duration_ms: 0
-    });
-
-    state.clips = await SB.fetchFeed();
-    save();
-    render();
-  }catch(err){
-    console.warn(err);
-    alert('Upload failed. Check your Supabase keys and bucket permissions.');
-  }
-  return;
-}
-      if(!state.isPremium){
-        const myUploads = state.clips.filter(isClipMine).length;
-        if(myUploads >= 2){ alert('Free demo allows two posts. Go Pro to unlock more'); return; }
-      }
-
-      const playableUrl = await ensurePlayableWavUrl(blob);
-      state.lastId += 1;
-
-      const c = {
-        id: state.lastId,
-       userName: state.profile.name ? state.profile.name : 'Guest',
-userEmoji: state.profile.emoji ? state.profile.emoji : '💨',
-userAvatar: state.profile.avatarUrl ? state.profile.avatarUrl : null,
-
-        title,
-        dataUrl: playableUrl,
-        duration:null,
-        hype:0,
-        reactions: (()=>{ const r={}; REACTIONS.forEach(x=>r[x]=0); return r; })(),
-        comments:[],
-        createdAt: Date.now()
-      };
-
-      state.clips.unshift(c);
-
-      // ensure user exists
-      const key = ensureUserKey(state.profile);
-      state.users[key].avatarUrl = state.profile.avatarUrl;
-
-      save();
-      render();
-    }
-
-    async function ensurePlayableWavUrl(blob){
-      try{
-        const array = await blob.arrayBuffer();
-        const ACtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new ACtx();
-        const buffer = await ctx.decodeAudioData(array);
-        const ch0 = buffer.getChannelData(0);
-        const wavBuf = floatToWav(ch0, buffer.sampleRate);
-        return URL.createObjectURL(new Blob([wavBuf], {type:'audio/wav'}));
-      }catch{
-        return URL.createObjectURL(blob);
+    function openProfile(force=false){
+      nameInput.value = state.profile.name || "";
+      renderEmojiPicker();
+      profileOverlay.classList.add("show");
+      if(force){
+        closeProfile.style.display = "none";
+      }else{
+        closeProfile.style.display = "";
       }
     }
 
-    // profile overlay
-    function openProfile(){
-  nameInput.value = state.profile.name || '';
-  emojiInput.value = state.profile.emoji || '💨';
-  const key = ensureUserKey(state.profile);
-  const u = state.users[key];
-  statsBadge.textContent = `Wins ${u.wins}, Streak ${u.streak}`;
-  profileOverlay.classList.add('show');
-}
-
-    btnProfile.onclick = openProfile;
-
-
-    closeProfile.onclick = ()=> profileOverlay.classList.remove('show');
+    btnProfile.onclick = ()=> openProfile(false);
+    closeProfile.onclick = ()=> profileOverlay.classList.remove("show");
 
     clearAvatar.onclick = ()=>{
       state.profile.avatarUrl = null;
-      ensureUserKey(state.profile);
+      saveProfile(state.profile);
       save();
-      alert('Avatar photo removed');
       render();
-    };
-
-    saveProfile.onclick = async ()=>{
-      state.profile.name = nameInput.value.trim() || 'Guest';
-      state.profile.emoji = emojiInput.value.trim() || '💨';
-      const file = avatarInput.files && avatarInput.files[0];
-      if(file){ state.profile.avatarUrl = await fileToDataUrl(file); }
-
-      ensureUserKey(state.profile);
-      save();
-      profileOverlay.classList.remove('show');
-      render();
+      alert("Avatar photo removed");
     };
 
     function fileToDataUrl(file){
@@ -1714,503 +1309,999 @@ userAvatar: state.profile.avatarUrl ? state.profile.avatarUrl : null,
       });
     }
 
-    // premium toggle (demo)
-    btnPremium.onclick = ()=>{ state.isPremium = !state.isPremium; save(); render(); };
+    function avatarFileToDataUrl(file){
+      return new Promise((resolve,reject)=>{
+        const img = new Image();
+        const reader = new FileReader();
 
-    // comments
-    async function openComments(id){
-      activeClipId = id;
-      const c = state.clips.find(x=>x.id===id);
-      document.getElementById('banterTitle').textContent = `Banter mode: ${c.title}`;
-      commentsList.innerHTML = '';
+        reader.onload = ()=>{
+          img.onload = ()=>{
+            try{
+              const max = 256;
+              const scale = Math.min(1, max / Math.max(img.width, img.height));
+              const canvas = document.createElement("canvas");
+              canvas.width = Math.max(1, Math.round(img.width * scale));
+              canvas.height = Math.max(1, Math.round(img.height * scale));
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              resolve(canvas.toDataURL("image/jpeg", 0.82));
+            }catch(err){
+              reject(err);
+            }
+          };
+          img.onerror = reject;
+          img.src = reader.result;
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    saveProfileBtn.onclick = async ()=>{
+      const name = String(nameInput.value||"").trim();
+      if(!name || name.toLowerCase() === "guest"){
+        alert("Please enter a name, Guest is not allowed.");
+        return;
+      }
+
+      state.profile.name = name;
+      if(!state.profile.emoji) state.profile.emoji = "💨";
+
+      const file = avatarInput.files && avatarInput.files[0];
+      if(file){
+        if(USE_SUPABASE){
+          try{
+            await SB.ensureUserId();
+            const avatarUrl = await SB.uploadAvatar(file);
+            state.profile.avatarUrl = avatarUrl;
+          }catch(err){
+            console.warn(err);
+            alert("Avatar image could not be saved. Your emoji will be used for now.");
+            state.profile.avatarUrl = null;
+          }
+        }else{
+          state.profile.avatarUrl = await fileToDataUrl(file);
+        }
+      }
+
+      saveProfile(state.profile);
+      save();
+
+      if(USE_SUPABASE){
+        try{ await SB.upsertMe(state.profile); }catch(e){ console.warn(e); }
+        await refreshFromSupabase();
+      }
+
+      profileOverlay.classList.remove("show");
+      render();
+    };
+
+    // ===== Premium toggle (test button) =====
+    btnPremium.onclick = ()=>{
+      state.isPremium = !state.isPremium;
+      save();
+      render();
+    };
+
+    // ===== Recording logic =====
+    async function startRecording(){
+      if(isRecording) return;
+      if(!isProfileReady(state.profile)){
+        openProfile(true);
+        return;
+      }
+
+      try{
+        const stream = await ensureMicStream();
+        const mime = MediaRecorder.isTypeSupported("audio/mp4") ? "audio/mp4" : (MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "");
+        mediaRecorder = new MediaRecorder(stream, mime ? { mimeType:mime } : undefined);
+        recChunks = [];
+        mediaRecorder.ondataavailable = e => { if(e.data && e.data.size) recChunks.push(e.data); };
+        mediaRecorder.onstop = async ()=>{
+          try{
+            const blob = new Blob(recChunks, { type: mime || "audio/webm" });
+            await addBlobAsClip(blob, `Grunt ${new Date().toLocaleTimeString()}`);
+          }finally{
+            closeMicNow();
+          }
+        };
+      }catch(err){
+        alert("Mic access blocked. Run from localhost or https, then allow mic access.");
+        return;
+      }
+
+      isRecording = true;
+      btnRecord.classList.add("holding");
+      recStartTime = Date.now();
+      timerEl.textContent = "00:00";
+      recStatus.textContent = "Recording...";
+
+      if(recTimer){ clearInterval(recTimer); recTimer = null; }
+      recTimer = setInterval(()=>{
+        const s = Math.floor((Date.now()-recStartTime)/1000);
+        timerEl.textContent = `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
+      }, 250);
+
+      try{ mediaRecorder.start(); }catch{}
+    }
+
+    function stopRecording(){
+      if(!isRecording) return;
+
+      if(mediaRecorder && mediaRecorder.state !== "inactive"){
+        try{ mediaRecorder.stop(); }catch{}
+      }
+
+      if(recTimer){ clearInterval(recTimer); recTimer = null; }
+
+      const s = Math.floor((Date.now()-recStartTime)/1000);
+      timerEl.textContent = `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
+
+      btnRecord.classList.remove("holding");
+      recStatus.textContent = "Ready";
+      isRecording = false;
+    }
+
+    btnRecord.addEventListener("pointerdown", (e)=>{
+      e.preventDefault();
+      btnRecord.setPointerCapture?.(e.pointerId);
+      startRecording();
+    });
+    btnRecord.addEventListener("pointerup", (e)=>{
+      e.preventDefault();
+      stopRecording();
+    });
+    btnRecord.addEventListener("pointercancel", (e)=>{
+      e.preventDefault();
+      stopRecording();
+    });
+    window.addEventListener("blur", ()=>{ if(isRecording) stopRecording(); });
+
+    // ===== Clip creation =====
+    async function addBlobAsClip(blob, title){
+      if(USE_SUPABASE){
+        try{
+          if(!isProfileReady(state.profile)){ openProfile(true); return; }
+          await SB.upsertMe(state.profile);
+
+          const clipId = (crypto.randomUUID ? crypto.randomUUID() : uuidv4());
+          const audioPath = await SB.uploadAudio(blob, clipId);
+
+          const { error } = await sb.from("grunts").insert({
+            id: clipId,
+            user_id: SB.userId,
+            title: title || "Untitled Grunt",
+            audio_path: audioPath,
+            duration_ms: 0
+          });
+          if(error) throw error;
+
+          await refreshFromSupabase();
+        }catch(err){
+          console.warn(err);
+          alert("Upload failed. Check your bucket is public and policies allow insert.");
+        }
+        return;
+      }
+
+      // local only
+      if(!state.isPremium){
+        const mineCount = state.clips.filter(c=> c.userName === state.profile.name).length;
+        if(mineCount >= 2){ alert("Free demo allows two posts. Toggle Pro for testing."); return; }
+      }
+
+      const playableUrl = URL.createObjectURL(blob);
+      state.clips.unshift({
+        id: "local_" + Date.now(),
+        userName: state.profile.name,
+        userAvatar: state.profile.avatarUrl,
+        userEmoji: state.profile.emoji,
+        title,
+        dataUrl: playableUrl,
+        duration: null,
+        createdAt: Date.now(),
+        reactions: (()=>{ const r={}; FEED_REACTIONS.forEach(x=>r[x]=0); return r; })(),
+        _commentCount: 0,
+        _previewComments: []
+      });
+
+      save();
+      remindedArena();
+      render();
+    }
+
+    // ===== Banter =====
+    async function openComments(gruntId){
+      if(!isProfileReady(state.profile)){ openProfile(true); return; }
+
+      activeClipId = gruntId;
+      const clip = state.clips.find(c=>c.id===gruntId);
+      document.getElementById("banterTitle").textContent = `Banter mode: ${clip ? clip.title : "Grunt"}`;
+      commentsList.innerHTML = "";
 
       if(USE_SUPABASE){
         try{
-          const rows = await SB.fetchComments(id);
-          rows.forEach(row=>{
-            const div = document.createElement('div');
-            div.className = 'comment';
-            div.textContent = `${row.emoji} ${row.by}: ${row.text}`;
+          const rows = await SB.fetchComments(gruntId);
+          rows.forEach(r=>{
+            const div = document.createElement("div");
+            div.className = "comment";
+            const av = r.avatar ? `<img src="${r.avatar}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;vertical-align:middle">` : `<span style="font-size:18px;vertical-align:middle">${r.emoji}</span>`;
+            div.innerHTML = `${av} <strong>${escapeHtml(r.by)}:</strong> ${escapeHtml(r.text)}`;
             commentsList.appendChild(div);
           });
         }catch(err){
           console.warn(err);
         }
-      }else{
-      c.comments.forEach(t=>{
-        const div = document.createElement('div');
-        div.className = 'comment';
-        div.textContent = t;
-        commentsList.appendChild(div);
-      });
       }
 
-      banterPlayer.innerHTML = '';
-      const controller = createArcadePlayer(c.dataUrl);
-      banterPlayer.appendChild(controller.el);
-      controller.onPlay = ()=>{
-        if(currentAudioController && currentAudioController !== controller){
-          currentAudioController.pause();
-        }
-        currentAudioController = controller;
-      };
-
-      commentsOverlay.classList.add('show');
+      commentsOverlay.classList.add("show");
     }
 
     sendComment.onclick = async ()=>{
-      const t = commentInput.value.trim();
+      const t = String(commentInput.value||"").trim();
       if(!t) return;
+      if(!isProfileReady(state.profile)){ openProfile(true); return; }
 
       if(USE_SUPABASE){
         try{
+          await SB.upsertMe(state.profile);
           await SB.addComment(activeClipId, t);
-          commentInput.value='';
+          commentInput.value = "";
+          await refreshFromSupabase();
           await openComments(activeClipId);
-          state.clips = await SB.fetchFeed();
-          save();
-          render();
+          return;
         }catch(err){
           console.warn(err);
-          alert('Could not post banter');
+          alert("Could not post banter");
+          return;
         }
-        return;
       }
-
-      const c = state.clips.find(x=>x.id===activeClipId);
-      c.comments.push(t);
-      commentInput.value='';
-      save();
-      openComments(activeClipId);
     };
 
-    closeComments.onclick = ()=> commentsOverlay.classList.remove('show');
+    closeComments.onclick = ()=> commentsOverlay.classList.remove("show");
+    closeOpponent.onclick = () => opponentOverlay.classList.remove("show");
 
-    // battles
-    const btnBattle = document.getElementById('btnBattle');
-if(btnBattle){
-  btnBattle.onclick = () => openMyClipPicker(); // opens battle flow
-}
- // opens battle flow
-    document.getElementById('closeBattle').onclick = ()=> battleOverlay.classList.remove('show');
 
-    document.getElementById('closeOpponent').onclick = ()=> opponentOverlay.classList.remove('show');
+    // ===== Leaderboards =====
+    function hypeScore(clip){
+      const rxTotal = FEED_REACTIONS.reduce((sum, e)=> sum + (clip.reactions?.[e] || 0), 0);
+      const cm = clip._commentCount || 0;
+      return rxTotal + cm;
+    }
 
-    document.getElementById('closeVictory').onclick = ()=> victoryOverlay.classList.remove('show');
+    function computeClipsBoard(kind){
+      const weekAgo = Date.now() - 7*24*3600*1000;
+      const list = kind === "week" ? state.clips.filter(c=> (c.createdAt||0) >= weekAgo) : [...state.clips];
+      return list.sort((a,b)=> hypeScore(b) - hypeScore(a)).slice(0,3);
+    }
 
-    
-function openMyClipPicker(opponentClipId=null){
-  const mine = state.clips.filter(c=> isClipMine(c));
-  if(mine.length === 0){
-    alert('Post at least one grunt first, then you can challenge someone.');
+    async function computeBattleChamps(){
+      // simple computed leaderboard, from closed battles
+      // if you want this perfect, we can add a stats table later
+      if(!USE_SUPABASE){
+        return [];
+      }
+      const { data, error } = await sb
+        .from("battles")
+        .select("id, status, winner_grunt_id, grunt_a_id, grunt_b_id")
+        .eq("status","closed")
+        .order("created_at", { ascending:false })
+        .limit(200);
+      if(error) return [];
+
+      // gather grunt ids
+      const gset = new Set();
+      (data||[]).forEach(b=>{
+        gset.add(b.grunt_a_id);
+        gset.add(b.grunt_b_id);
+      });
+
+      const ids = Array.from(gset);
+      if(!ids.length) return [];
+
+      const { data: gr } = await sb
+        .from("grunts")
+        .select("id, user_id, users(display_name, avatar)")
+        .in("id", ids);
+
+      const gruntToUser = {};
+      (gr||[]).forEach(r=>{
+        gruntToUser[r.id] = {
+          id: r.user_id,
+          name: r.users?.display_name || "Unknown",
+          avatar: isProbablyImage(r.users?.avatar) ? r.users.avatar : null,
+          emoji: (r.users?.avatar && !isProbablyImage(r.users.avatar)) ? r.users.avatar : "💨"
+        };
+      });
+
+      const stats = {};
+      function ensure(uid, u){
+        if(!stats[uid]){
+          stats[uid] = { userId: uid, name:u.name, avatar:u.avatar, emoji:u.emoji, wins:0, losses:0, draws:0 };
+        }
+      }
+
+      (data||[]).forEach(b=>{
+        const aU = gruntToUser[b.grunt_a_id];
+        const bU = gruntToUser[b.grunt_b_id];
+        if(!aU || !bU) return;
+
+        ensure(aU.id, aU);
+        ensure(bU.id, bU);
+
+        if(!b.winner_grunt_id){
+          stats[aU.id].draws += 1;
+          stats[bU.id].draws += 1;
+          return;
+        }
+
+        const winnerU = gruntToUser[b.winner_grunt_id];
+        if(!winnerU) return;
+
+        if(winnerU.id === aU.id){
+          stats[aU.id].wins += 1;
+          stats[bU.id].losses += 1;
+        }else{
+          stats[bU.id].wins += 1;
+          stats[aU.id].losses += 1;
+        }
+      });
+
+      const list = Object.values(stats).sort((x,y)=> (y.wins - x.wins) || (y.draws - x.draws) || (x.losses - y.losses)).slice(0,3);
+      return list;
+    }
+
+    function scrollToClip(clipId){
+      const el = document.getElementById("clip_" + String(clipId).replaceAll("-","_"));
+      if(!el) return;
+      el.scrollIntoView({ behavior:"smooth", block:"center" });
+      el.style.outline = "2px solid rgba(34,211,238,.45)";
+      setTimeout(()=>{ el.style.outline = ""; }, 1200);
+    }
+// =========================
+// Battle: Opponent Picker
+// =========================
+window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  opponentOverlay.classList.add("show");
+    opponentList.innerHTML = "";
+  
+
+  const clips = (state && Array.isArray(state.clips)) ? state.clips : [];
+
+  if (clips.length === 0) {
+    opponentList.innerHTML = "<div class='tiny'>No grunts loaded yet. Wait a moment, then try again.</div>";
     return;
   }
 
-  opponentTitle.textContent = opponentClipId ? 'Choose your grunt to battle with' : 'Choose your grunt';
-  opponentList.innerHTML = '';
+  const map = new Map();
 
-  mine.slice(0,50).forEach(c=>{
-    const row = document.createElement('div');
-    row.className = 'comment';
-    row.style.display = 'grid';
-    row.style.gap = '10px';
+  for (const c of clips) {
+    const name = c.userName || c.username || c.name || "Guest";
+    if (!map.has(name)) map.set(name, []);
+    map.get(name).push(c);
+  }
 
-    const head = document.createElement('div');
-    head.className = 'rowHead';
+  const groups = Array.from(map.entries());
 
-    const left = document.createElement('div');
-    left.className = 'rowUser';
-    left.textContent = `${c.userEmoji || '💨'}  ${c.title || 'Untitled Grunt'}`;
+  groups.forEach(([name, list]) => {
+    const latest = list[0];
 
-    const right = document.createElement('div');
-    right.className = 'rowMeta';
-    right.textContent = fmtDur(c.duration || 0);
+    const row = document.createElement("button");
+    row.className = "btn ghost";
+    row.style.width = "100%";
+    row.style.display = "flex";
+    row.style.alignItems = "center";
+    row.style.justifyContent = "space-between";
+    row.style.margin = "10px 0";
+    row.style.padding = "12px";
 
-    head.append(left, right);
-    row.appendChild(head);
+    const left = document.createElement("div");
+    left.style.display = "flex";
+    left.style.alignItems = "center";
+    left.style.gap = "10px";
 
-    row.onclick = ()=>{
-      opponentOverlay.classList.remove('show');
-      if(opponentClipId){
-        startBattle(c.id, opponentClipId, 'Challenge');
-      }else{
-        openOpponentPicker(c.id);
-      }
-    };
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.innerHTML = renderAvatarHtml(latest.userAvatar, latest.userEmoji);
+
+    const text = document.createElement("div");
+    text.innerHTML = `<div class="name">${escapeHtml(name)}</div><div class="muted">Tap to select</div>`;
+
+
+    left.appendChild(avatar);
+    left.appendChild(text);
+
+    const right = document.createElement("div");
+    right.className = "tiny";
+    right.textContent = "Select";
+
+    row.appendChild(left);
+    row.appendChild(right);
+
+   row.onclick = async function () {
+  const challengerId = window.currentBattleContext && window.currentBattleContext.challengerGruntId;
+  const opponentId = latest.id;
+
+  console.log("Starting battle", challengerId, opponentId);
+
+  opponentOverlay.classList.remove("show");
+  opponentList.innerHTML = "";
+
+  if(!challengerId || !opponentId){
+    alert("Battle setup missing a grunt id.");
+    return;
+  }
+
+  if(challengerId === opponentId){
+    alert("You cannot battle the same grunt. Choose a different opponent.");
+    return;
+  }
+
+  if(battleCreateInFlight){
+    return;
+  }
+  battleCreateInFlight = true;
+
+  try{
+    stopArenaPoll();
+
+    state.arena.phase = "creating";
+    state.arena.activeBattleId = null;
+    state.arena.challengerId = challengerId;
+    state.arena.opponentId = opponentId;
+    save();
+
+    scheduleArenaRender();
+
+    const battleRow = await SB.createBattle(challengerId, opponentId);
+    console.log("createBattle returned", battleRow);
+
+    if(!battleRow || !battleRow.id){
+      throw new Error("createBattle did not return a battle id.");
+    }
+
+    state.arena.phase = "active";
+    state.arena.activeBattleId = battleRow.id;
+    save();
+
+    await refreshFromSupabase();
+    scheduleArenaRender();
+  }catch(err){
+    console.warn("Create battle failed", err);
+
+    state.arena.phase = "idle";
+    state.arena.activeBattleId = null;
+    save();
+
+    alert("Battle failed. Open console to see the error details.");
+    scheduleArenaRender();
+  }finally{
+    battleCreateInFlight = false;
+  }
+};
+
+
+
+
+
+
+
+
 
     opponentList.appendChild(row);
   });
 
-  opponentOverlay.classList.add('show');
+  window.currentBattleContext = battleContext;
+};
+
+  
+
+
+
+    // ===== Battle Arena =====
+    let arenaPoll = null;
+    let arenaCurrentBattleId = null;
+let battleCreateInFlight = false;
+
+let arenaRenderScheduled = false;
+let arenaRenderRunning = false;
+
+function stopArenaPoll(){
+  if(arenaPoll){
+    clearInterval(arenaPoll);
+    arenaPoll = null;
+  }
 }
 
-function openBattleQuick(forceAId=null, forceBId=null){
-      if(state.clips.length < 2){ alert('Not enough clips yet'); return; }
+function scheduleArenaRender(){
+  if(arenaRenderScheduled) return;
+  arenaRenderScheduled = true;
 
-      let a = forceAId ? state.clips.find(x=>x.id===forceAId) : state.clips[Math.floor(Math.random()*state.clips.length)];
-      let b = forceBId ? state.clips.find(x=>x.id===forceBId) : a;
-      if(!forceBId){
-        while(b.id===a.id){ b = state.clips[Math.floor(Math.random()*state.clips.length)]; }
-      }else{
-        if(!b || b.id===a.id){
-          // fallback
-          b = state.clips.find(x=>x.id!==a.id);
-        }
-      }
+  requestAnimationFrame(async ()=>{
+    arenaRenderScheduled = false;
+    if(arenaRenderRunning) return;
 
-      startBattle(a.id, b.id, forceAId ? 'Challenge' : 'Quick Battle');
+    arenaRenderRunning = true;
+    try{
+      await renderArena();
+
+    }finally{
+      arenaRenderRunning = false;
     }
+  });
+}
 
-    function openOpponentPicker(myClipId){
-      const myClip = state.clips.find(x=>x.id===myClipId);
-      const myKey = userKeyFromClip(myClip);
 
-      const options = state.clips.filter(c=> c.id!==myClipId && userKeyFromClip(c) !== myKey);
-      if(options.length === 0){
-        alert('No opponents yet. Post more grunts, or wait for the feed to grow.');
+
+
+function stopArenaPoll(){
+  if(arenaPoll){
+    clearInterval(arenaPoll);
+    arenaPoll = null;
+  }
+}
+
+
+    async function renderArena(){
+
+  console.log("renderArena tick", {
+    phase: state.arena?.phase,
+    activeBattleId: state.arena?.activeBattleId
+  });
+
+  if (arenaPoll) {
+    clearInterval(arenaPoll);
+    arenaPoll = null;
+  }
+
+
+      arenaGrid.innerHTML = "";
+      arenaTimer.textContent = "00:00";
+
+      if(!USE_SUPABASE){
+        arenaTitle.textContent = "Battle Arena needs Supabase";
+        arenaSub.textContent = "Enable Supabase to test battles with others.";
+        arenaTiny.textContent = "";
         return;
       }
 
-      opponentList.innerHTML = '';
+      let battle = null;
+      try{
+        battle = await SB.fetchLiveBattle();
+      }catch(err){
+        console.warn(err);
+        arenaTitle.textContent = "Battle Arena unavailable";
+        arenaSub.textContent = "Could not load battles.";
+        arenaTiny.textContent = "";
+        return;
+      }
 
-      options.slice(0,50).forEach(c=>{
-        const row = document.createElement('div');
-        row.className = 'comment';
-        row.style.display = 'grid';
-        row.style.gap = '10px';
+console.log("renderArena battle resolved", battle);
 
-        const head = document.createElement('div');
-        head.className = 'row space';
-        head.innerHTML = `
-          <div class="row" style="gap:10px">
-            <div class="avatar">${c.userAvatar ? `<img src="${c.userAvatar}">` : c.userEmoji}</div>
-            <div>
-              <div class="name">${escapeHtml(c.userName)}</div>
-              <div class="muted">${escapeHtml(c.title)}</div>
-            </div>
-          </div>
-          <div class="pill linkLike" style="text-decoration:none">Select</div>
-        `;
+      if(!battle){
 
-        const preview = createArcadePlayer(c.dataUrl);
-        preview.el.style.marginTop = '6px';
+        if(state.arena && state.arena.activeBattleId){
+  stopArenaPoll();
+  arenaTitle.textContent = "Loading battle...";
+  arenaSub.textContent = "Getting the arena ready.";
+  arenaTiny.textContent = "";
+  setTimeout(()=> scheduleArenaRender(), 400);
+  return;
+}
 
-        row.appendChild(head);
-        row.appendChild(preview.el);
+        arenaTitle.textContent = "The dust has settled. Who is next?";
+        arenaSub.textContent = "Best of five, first to 3 wins.";
+        arenaTiny.textContent = "";
+        return;
+      }
 
-        // select
-        head.querySelector('.linkLike').onclick = ()=>{
-          opponentOverlay.classList.remove('show');
-          startBattle(myClipId, c.id, 'Challenge');
-        };
+      const endsAt = new Date(battle.ends_at).getTime();
+      const battleGrunts = await SB.fetchBattleGrunts(battle);
+      const a = battleGrunts[battle.grunt_a_id];
+      const b = battleGrunts[battle.grunt_b_id];
 
-        // one audio at a time
-        preview.onPlay = ()=>{
-          if(currentAudioController && currentAudioController !== preview){
-            currentAudioController.pause();
+      console.log("renderArena grunts", {
+  a,
+  b,
+  ids: [battle.grunt_a_id, battle.grunt_b_id]
+});
+
+
+
+      if(!a || !b){
+  stopArenaPoll();
+  arenaTitle.textContent = "Loading battle...";
+  arenaSub.textContent = "Getting the battle grunts ready.";
+  arenaTiny.textContent = "";
+
+  setTimeout(()=> scheduleArenaRender(), 400);
+  return;
+}
+
+console.log("renderArena rendering current battle", battle.id);
+
+      arenaTitle.textContent = "Current battle";
+      arenaSub.textContent = "Best of five, first to 3 wins.";
+
+      const left = makeArenaSide(a, "Archduke of Air biscuits");
+      const right = makeArenaSide(b, "Baron of Bum Burps");
+
+      arenaGrid.appendChild(left);
+      arenaGrid.appendChild(right);
+
+      async function refreshCountsAndMaybeClose(){
+        const now = Date.now();
+        const remainingMs = Math.max(0, endsAt - now);
+        const remainingSec = Math.ceil(remainingMs / 1000);
+        arenaTimer.textContent = fmtDur(remainingSec);
+
+        const counts = await SB.fetchBattleVotes(battle.id);
+        const aVotes = counts[a.id] || 0;
+        const bVotes = counts[b.id] || 0;
+
+        left.querySelector(".muted").textContent = `Votes: ${aVotes}`;
+        right.querySelector(".muted").textContent = `Votes: ${bVotes}`;
+
+        const someoneHit3 = (aVotes >= 3 || bVotes >= 3);
+        const timeUp = remainingMs <= 0;
+
+        if(someoneHit3 || timeUp){
+          // compute outcome
+          if(aVotes === bVotes){
+            await SB.closeBattleAsDraw(battle.id);
+            announceIfNew(battle.id, "draw", a, b);
+          }else{
+            const winner = aVotes > bVotes ? a : b;
+            await SB.closeBattleAsWinner(battle.id, winner.id);
+            announceIfNew(battle.id, "win", winner, null);
           }
-          currentAudioController = preview;
-        };
+          if (arenaPoll) {
+  clearInterval(arenaPoll);
+  arenaPoll = null;
+}
 
-        opponentList.appendChild(row);
-      });
+await refreshFromSupabase();
+scheduleArenaRender();
 
-      opponentOverlay.classList.add('show');
-    }
 
-    async function startBattle(aId, bId, modeLabel){
-      if(USE_SUPABASE){
-        try{
-          if(!SB.userId){ await SB.init(state.profile); }
-          const b = await SB.createBattle(aId, bId, modeLabel);
-          state.battles = await SB.fetchBattles();
-          openBattle(b.id);
-          return;
-        }catch(err){
-          console.warn(err);
-          alert('Could not start battle');
-          return;
-        }
+return;
       }
 
-      state.lastBattleId += 1;
-      const now = Date.now();
-      const battle = {
-        id: state.lastBattleId,
-        aId,
-        bId,
-        createdAt: now,
-        endsAt: now + 24*3600*1000,
-        votesA: 0,
-        votesB: 0,
-        winnerId: null,
-        resolved: false,
-        mode: modeLabel
-      };
-      state.battles.unshift(battle);
-      save();
-      openBattle(battle.id);
     }
 
-    function openBattle(battleId){
-      const battle = state.battles.find(b=>b.id===battleId);
-      if(!battle) return;
-      const a = state.clips.find(c=>c.id===battle.aId);
-      const b = state.clips.find(c=>c.id===battle.bId);
-      if(!a || !b) return;
+      // initial
+      try{ await refreshCountsAndMaybeClose(); }catch(err){ console.warn(err); }
 
-      battleTitle.textContent = battle.mode;
-      battleIntro.textContent = 'Two grunts enter. One champion leaves.';
-      battleGrid.innerHTML = '';
+      // poll
+      if(arenaPoll) clearInterval(arenaPoll);
+      arenaPoll = setInterval(async ()=>{
+        try{ await refreshCountsAndMaybeClose(); }catch(err){ /* ignore */ }
+      }, 5000);
 
-      const aCard = makeBattleSide(a, 'A');
-      const bCard = makeBattleSide(b, 'B');
-      battleGrid.appendChild(aCard);
-      battleGrid.appendChild(bCard);
+      function makeArenaSide(clip, voteLabel){
+        const side = document.createElement("div");
+        side.className = "card grid";
 
-      battleOverlay.classList.add('show');
-
-      function makeBattleSide(clip, side){
-        const card = document.createElement('div');
-        card.className = 'card grid';
-        const isChamp = (state.users[userKeyFromClip(clip)]?.champUntil||0) > Date.now();
-        card.innerHTML = `
-          <div class="row" style="gap:10px">
-            <div class="avatar ${isChamp ? 'champ' : ''}">${clip.userAvatar ? `<img src="${clip.userAvatar}">` : clip.userEmoji}</div>
-            <div style="flex:1">
-              <div class="name">${escapeHtml(clip.userName)}</div>
-              <div class="muted">${escapeHtml(clip.title)}</div>
-            </div>
+        const header = document.createElement("div");
+        header.className = "row";
+        header.innerHTML = `
+          <div class="avatar">${renderAvatarHtml(clip.userAvatar, clip.userEmoji)}</div>
+          <div style="flex:1">
+            <div class="name">${escapeHtml(clip.userName)}</div>
+            <div class="muted">${escapeHtml(clip.title)}</div>
           </div>
         `;
+        side.appendChild(header);
 
-        let controller;
-        if(clip.dataUrl){
-          controller = createArcadePlayer(clip.dataUrl);
-          controller.onPlay = ()=>{
-            if(currentAudioController && currentAudioController !== controller){
-              currentAudioController.pause();
-            }
-            currentAudioController = controller;
-          };
-          card.appendChild(controller.el);
-        }else{
-          const pending = document.createElement('div');
-          pending.className = 'audioBar';
-          pending.innerHTML = `<div class="muted" style="padding:10px">Audio is still processing. Tap refresh in a moment.</div>
-                               <button class="btn secondary" style="margin:10px" onclick="location.reload()">Refresh feed</button>`;
-          card.appendChild(pending);
-        }
-const vote = document.createElement('button');
-        vote.className = 'btn';
-        vote.textContent = 'Pick the champion';
-        vote.onclick = async ()=>{
-  if(battle.resolved) return;
+        const player = createArcadePlayer(clip.audio);
+        player.onPlay = ()=>{
+          if(currentAudioController && currentAudioController !== player) currentAudioController.pause();
+          currentAudioController = player;
+        };
+        side.appendChild(player.el);
 
-  if(USE_SUPABASE){
-    const votedId = (side === 'A') ? a.id : b.id;
-    try{
-      const res = await SB.voteBattle(battle.id, votedId);
+        const voteBtn = document.createElement("button");
+        voteBtn.className = "btn";
+        voteBtn.textContent = voteLabel;
+        voteBtn.onclick = async ()=>{
+          if(!isProfileReady(state.profile)){ openProfile(true); return; }
+          await SB.upsertMe(state.profile);
+          const res = await SB.voteBattle(battle.id, clip.id);
+          if(!res.ok){
+            alert("You have already voted in this battle.");
+            return;
+          }
+          await refreshCountsAndMaybeClose();
+        };
+        side.appendChild(voteBtn);
 
-      // update tally labels immediately
-      // (we keep local display counts only)
-      if(side === 'A'){ battle.votesA += 1; } else { battle.votesB += 1; }
+        const tally = document.createElement("div");
+        tally.className = "muted";
+        tally.textContent = "Votes: 0";
+        side.appendChild(tally);
 
-      if(res.closed){
-        battle.resolved = true;
-        battle.winnerId = res.winnerId;
-        // refresh battles list
-        state.battles = await SB.fetchBattles();
-        battleOverlay.classList.remove('show');
-        const winner = (res.winnerId === a.id) ? a : b;
-        const badge = BADGES[Math.floor(Math.random()*BADGES.length)];
-        showVictory(winner, badge);
-        render();
-      }else{
-        // soft feedback
-        sfx('coin');
-      }
-    }catch(err){
-      console.warn(err);
-      alert('Vote failed');
-    }
-    return;
-  }
-
-  if(side === 'A'){ battle.votesA += 1; }
-  else{ battle.votesB += 1; }
-  resolveBattle(battle, a, b);
-};
-
-        card.appendChild(vote);
-
-        const tally = document.createElement('div');
-        tally.className = 'muted';
-        tally.textContent = `Votes: ${side==='A' ? battle.votesA : battle.votesB}`;
-        card.appendChild(tally);
-
-        return card;
+        return side;
       }
     }
 
-    function resolveBattle(battle, a, b){
-      // decide winner immediately for demo, based on vote totals
-      const winner = battle.votesA >= battle.votesB ? a : b;
-      const loser = winner.id === a.id ? b : a;
+    function announceIfNew(battleId, type, winnerClip, loserClip){
+      const last = localStorage.getItem(LAST_ANNOUNCED_BATTLE_KEY);
+      if(String(last) === String(battleId)) return;
+      localStorage.setItem(LAST_ANNOUNCED_BATTLE_KEY, String(battleId));
 
-      battle.winnerId = winner.id;
-      battle.resolved = true;
-      save();
+      if(type === "draw"){
+        victoryTitle.textContent = "IT IS A DRAW";
+        victorySubline.textContent = "NO CROPS WILL BE DUSTED TODAY";
+        victoryWinner.textContent = "The dust has settled, nobody wins this round.";
+        victoryBadge.textContent = "🟰";
+        victoryMeta.textContent = "Next battle will load when available.";
+        victoryOverlay.classList.add("show");
+        speak("No crops will be dusted today, it is a draw.");
+        return;
+      }
 
-      // update user stats
-      const wKey = userKeyFromClip(winner);
-      const lKey = userKeyFromClip(loser);
-      if(!state.users[wKey]) state.users[wKey] = { name: winner.userName, emoji: winner.userEmoji, avatarUrl: winner.userAvatar, wins:0, streak:0, lastWinAt:null, champUntil:0, badges:[] };
-      if(!state.users[lKey]) state.users[lKey] = { name: loser.userName, emoji: loser.userEmoji, avatarUrl: loser.userAvatar, wins:0, streak:0, lastWinAt:null, champUntil:0, badges:[] };
-
-      const w = state.users[wKey];
-      const l = state.users[lKey];
-
-      w.wins += 1;
-      w.streak += 1;
-      w.lastWinAt = Date.now();
-      w.champUntil = Date.now() + 24*3600*1000;
-      const badge = BADGES[Math.floor(Math.random()*BADGES.length)];
-      w.badges.unshift(badge);
-
-      // loser streak resets
-      l.streak = 0;
-
-      // payoff
-      battleOverlay.classList.remove('show');
-      showVictory(winner, badge);
-      save();
-      render();
-    }
-
-    function showVictory(winnerClip, badge){
-      // payoff screen
-      victorySubline.textContent = 'CHAMPION CROWNED';
-      victoryWinner.textContent = `${winnerClip.userEmoji} ${winnerClip.userName} wins`;
-      victoryBadge.textContent = `🏆 Badge: ${badge}`;
-      victoryMeta.textContent = 'Win added to Battle Champs';
-      victoryOverlay.classList.add('show');
-
-      sfx('victory');
-      speak(`Flawless grunt. ${winnerClip.userName} wins.`);
+      victoryTitle.textContent = "FARTALITY";
+      victorySubline.textContent = "CHAMPION CROWNED";
+      victoryWinner.textContent = `${(winnerClip.userName||"")} wins`;
+      victoryBadge.textContent = "🏆";
+      victoryMeta.textContent = "Winner announced in Battle Champs.";
+      victoryOverlay.classList.add("show");
+      speak(`Fartality. ${winnerClip.userName} wins.`);
     }
 
     function speak(text){
       try{
-        if(!('speechSynthesis' in window)) return;
-        // Keep the moment crisp
+        if(!("speechSynthesis" in window)) return;
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
         u.rate = 0.95;
         u.pitch = 0.85;
         u.volume = 0.85;
-
-        // Try to pick a clearer English voice when available
-        const voices = (window.speechSynthesis.getVoices && window.speechSynthesis.getVoices()) || [];
-        const preferred = voices.find(v => /en/i.test(v.lang||'') && /(Google|Microsoft|Zira|Daniel|Samantha|Tessa|Alex)/i.test(v.name||''))
-                       || voices.find(v => /en/i.test(v.lang||''));
-        if(preferred) u.voice = preferred;
-
-        // Some browsers need a tiny delay after user gesture
         setTimeout(()=> window.speechSynthesis.speak(u), 120);
-      }catch(e){
-        // ignore
-      }
-    }
-
-    // sound effects
-    function sfx(kind){
-      try{
-        const ACtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new ACtx();
-        const now = ctx.currentTime;
-
-        function tone(freq, t, type='sine', gain=0.10){
-          const o = ctx.createOscillator();
-          const g = ctx.createGain();
-          o.type = type;
-          o.frequency.setValueAtTime(freq, now);
-          g.gain.setValueAtTime(0.0001, now);
-          g.gain.exponentialRampToValueAtTime(gain, now+0.01);
-          g.gain.exponentialRampToValueAtTime(0.0001, now+t);
-          o.connect(g);
-          g.connect(ctx.destination);
-          o.start(now);
-          o.stop(now+t+0.02);
-        }
-
-        if(kind === 'click'){
-          tone(520, 0.08, 'square', 0.08);
-        }else if(kind === 'blip'){
-          tone(880, 0.06, 'triangle', 0.07);
-        }else if(kind === 'zap'){
-          tone(740, 0.07, 'sawtooth', 0.06);
-          setTimeout(()=> tone(980, 0.06, 'triangle', 0.05), 40);
-        }else if(kind === 'record'){
-          tone(220, 0.10, 'square', 0.08);
-          setTimeout(()=> tone(330, 0.08, 'square', 0.06), 70);
-        }else if(kind === 'stop'){
-          tone(180, 0.10, 'triangle', 0.06);
-        }else if(kind === 'victory'){
-          // arcade win sting
-          tone(392, 0.10, 'square', 0.08);
-          setTimeout(()=> tone(494, 0.10, 'square', 0.08), 120);
-          setTimeout(()=> tone(587, 0.14, 'square', 0.10), 240);
-          setTimeout(()=> tone(784, 0.18, 'square', 0.12), 420);
-        }
-
-        setTimeout(()=> ctx.close(), 600);
       }catch{}
     }
 
-    // tone generator for seeds
-    function generateTone(freq, seconds){
-      const sampleRate = 22050;
-      const length = Math.floor(sampleRate*seconds);
-      const data = new Float32Array(length);
-      for(let i=0;i<length;i++){
-        data[i] = Math.sin(2*Math.PI*freq*(i/sampleRate)) * Math.exp(-3*i/length);
+    // ===== Feed rendering =====
+    function render(){
+      // badge
+      const p = state.profile;
+      const badgeAvatar = p.avatarUrl ? `<img src="${p.avatarUrl}" style="width:18px;height:18px;border-radius:50%;object-fit:cover">` : `<span>${p.emoji || "💨"}</span>`;
+      const badgeName = isProfileReady(p) ? escapeHtml(p.name) : "Create profile";
+      avatarBadge.innerHTML = `${badgeAvatar} ${badgeName}`;
+
+      // premium label
+      premLabel.textContent = state.isPremium ? "Pro active" : "Go Pro, Grunt Harder, R50";
+      limitNote.style.display = state.isPremium ? "none" : "block";
+      countLabel.textContent = `${state.clips.length} total`;
+
+      // disable recording if profile not ready
+      btnRecord.disabled = !isProfileReady(state.profile);
+
+      // leaderboards
+      const tab = document.querySelector(".tab.active")?.dataset.tab || "week";
+      boards.innerHTML = "";
+
+      (async ()=>{
+        if(tab === "champs" && USE_SUPABASE){
+          const champs = await computeBattleChamps();
+          champs.forEach((c, i)=>{
+            const row = document.createElement("div");
+            row.className = "row space";
+            row.innerHTML = `
+              <div class="row" style="gap:10px">
+                <div class="pill">${i+1}</div>
+                <div class="avatar">${renderAvatarHtml(c.avatar, c.emoji)}</div>
+                <div>
+                  <div class="name">${escapeHtml(c.name)}</div>
+                  <div class="muted">Wins ${c.wins}, Losses ${c.losses}, Draws ${c.draws}</div>
+                </div>
+              </div>
+              <div class="muted"></div>
+            `;
+            boards.appendChild(row);
+          });
+          return;
+        }
+
+        const list = computeClipsBoard(tab);
+        list.forEach((c, i)=>{
+          const row = document.createElement("div");
+          row.className = "row space";
+          row.style.cursor = "pointer";
+          row.onclick = ()=> scrollToClip(c.id);
+          row.innerHTML = `
+            <div class="row" style="gap:10px">
+              <div class="pill">${i+1}</div>
+              <div class="avatar">${renderAvatarHtml(c.userAvatar, c.userEmoji)}</div>
+              <div>
+                <div class="name">${escapeHtml(c.userName)}</div>
+                <div class="muted">${fmtAgo(c.createdAt)} · ${escapeHtml(c.title)}</div>
+              </div>
+            </div>
+            <div class="muted">${hypeScore(c)} hype</div>
+          `;
+          boards.appendChild(row);
+        });
+      })();
+
+      // feed
+      feed.innerHTML = "";
+      state.clips.forEach(c=>{
+        const card = document.createElement("div");
+        card.className = "card";
+        card.id = "clip_" + String(c.id).replaceAll("-","_");
+
+        const meta = document.createElement("div");
+        meta.className = "row";
+        meta.innerHTML = `
+          <div class="avatar">${renderAvatarHtml(c.userAvatar, c.userEmoji)}</div>
+          <div style="flex:1">
+            <div class="name">${escapeHtml(c.userName)}</div>
+            <div class="muted">${fmtAgo(c.createdAt)} · ${escapeHtml(c.title)}</div>
+          </div>
+          <div class="pill">${hypeScore(c)} hype</div>
+        `;
+        card.appendChild(meta);
+
+        const playerHost = document.createElement("div");
+        const controller = createArcadePlayer(c.dataUrl);
+        playerHost.appendChild(controller.el);
+        card.appendChild(playerHost);
+
+        controller.onPlay = ()=>{
+          if(currentAudioController && currentAudioController !== controller) currentAudioController.pause();
+          currentAudioController = controller;
+        };
+
+        // actions layout
+        const actions = document.createElement("div");
+        actions.className = "miniActionsRow";
+        actions.style.marginTop = "10px";
+
+        const rxWrap = document.createElement("div");
+        rxWrap.className = "actions";
+        rxWrap.style.gap = "8px";
+
+        FEED_REACTIONS.forEach(r=>{
+          const btn = document.createElement("div");
+          btn.className = "chip";
+          btn.innerHTML = `<span>${r}</span><span class="count">${c.reactions?.[r] || 0}</span>`;
+          btn.onclick = async ()=>{
+            if(!isProfileReady(state.profile)){ openProfile(true); return; }
+            if(USE_SUPABASE){
+              try{
+                await SB.upsertMe(state.profile);
+                await SB.addReaction(c.id, r);
+                await refreshFromSupabase();
+              }catch(err){ console.warn(err); }
+              return;
+            }
+          };
+          rxWrap.appendChild(btn);
+        });
+
+        const right = document.createElement("div");
+        right.className = "rightButtons";
+
+        const banterBtn = document.createElement("button");
+        banterBtn.className = "btn secondary";
+        banterBtn.textContent = "Enter banter";
+        banterBtn.onclick = ()=> openComments(c.id);
+const battleBtn = document.createElement("button");
+battleBtn.className = "btn";
+battleBtn.textContent = "Battle";
+
+battleBtn.onclick = () => {
+  window.openOpponentPicker({ challengerGruntId: c.id });
+};
+
+
+
+
+
+
+
+        const delBtn = document.createElement("button");
+        delBtn.className = "btn ghost danger";
+        delBtn.textContent = "Delete";
+        delBtn.onclick = ()=>{
+          alert("Delete is disabled in this build to keep shared testing clean.");
+        };
+
+        right.append(banterBtn, battleBtn, delBtn);
+
+        actions.append(rxWrap, right);
+        card.appendChild(actions);
+
+        // banter preview
+        const preview = document.createElement("div");
+        preview.className = "banterPreview";
+
+        if(c._previewComments && c._previewComments.length){
+          c._previewComments.forEach(row=>{
+            const line = document.createElement("div");
+            line.className = "banterLine";
+            const av = row.avatar ? `🖼` : row.emoji;
+            line.textContent = `${av} ${row.by}: ${row.text}`;
+            preview.appendChild(line);
+          });
+        }else{
+          const empty = document.createElement("div");
+          empty.className = "banterEmpty";
+          empty.textContent = "No banter yet. Be the first 👀";
+          preview.appendChild(empty);
+        }
+
+        const viewAll = document.createElement("button");
+        viewAll.className = "banterViewAll";
+        viewAll.textContent = (c._commentCount || 0) > 0 ? "View more banter" : "Enter banter";
+        viewAll.onclick = ()=> openComments(c.id);
+        preview.appendChild(viewAll);
+
+        card.appendChild(preview);
+
+        feed.appendChild(card);
+      });
+
+      // arena
+scheduleArenaRender();
+
+    }
+
+    tabs.forEach(t=>{
+      t.onclick = ()=>{
+        tabs.forEach(x=>x.classList.remove("active"));
+        t.classList.add("active");
+        render();
+      };
+    });
+
+    async function refreshFromSupabase(){
+      if(!USE_SUPABASE) return;
+      try{
+        await SB.ensureUserId();
+        state.clips = await SB.fetchFeed();
+        save();
+        render();
+      }catch(err){
+        console.warn(err);
       }
-      const wav = floatToWav(data, sampleRate);
-      return URL.createObjectURL(new Blob([wav], {type:'audio/wav'}));
     }
 
-    function floatToWav(float32, sampleRate){
-      const buffer = new ArrayBuffer(44 + float32.length*2);
-      const view = new DataView(buffer);
-      writeStr(view,0,'RIFF');
-      view.setUint32(4,36 + float32.length*2,true);
-      writeStr(view,8,'WAVE');
-      writeStr(view,12,'fmt ');
-      view.setUint32(16,16,true);
-      view.setUint16(20,1,true);
-      view.setUint16(22,1,true);
-      view.setUint32(24,sampleRate,true);
-      view.setUint32(28,sampleRate*2,true);
-      view.setUint16(32,2,true);
-      view.setUint16(34,16,true);
-      writeStr(view,36,'data');
-      view.setUint32(40,float32.length*2,true);
-      let offset = 44;
-      for(let i=0;i<float32.length;i++){
-        let s = Math.max(-1, Math.min(1, float32[i]));
-        view.setInt16(offset, s<0?s*0x8000:s*0x7FFF, true);
-        offset += 2;
+    function remindedArena(){
+      // placeholder to avoid confusion, arena handled by renderArena
+    }
+
+    // ===== Start up =====
+    (async ()=>{
+      if(!state.profile) state.profile = { name:"", emoji:"💨", avatarUrl:null };
+      if(!state.profile.emoji) state.profile.emoji = "💨";
+
+      if(!isProfileReady(state.profile)){
+        openProfile(true);
+      }else{
+        saveProfile(state.profile);
       }
-      return buffer;
-    }
 
-    function writeStr(view, offset, str){
-      for(let i=0;i<str.length;i++) view.setUint8(offset+i, str.charCodeAt(i));
-    }
+      if(USE_SUPABASE){
+        try{
+          await SB.ensureUserId();
+          setupRealtimeRefresh();
+          if(isProfileReady(state.profile)){
+            await SB.upsertMe(state.profile);
+          }
+          await refreshFromSupabase();
+        }catch(err){
+          console.warn(err);
+          alert("Supabase connection failed. Double check your URL, key, and policies.");
+        }
+      }
 
-    // init
-    render();
+      render();
+    })();
+    
+    })();
+
   </script>
 </body>
 </html>
