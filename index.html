@@ -606,7 +606,7 @@
       <div class="row space">
         <div>
           <div class="name" id="arenaTitle">The dust has settled. Who is next?</div>
-          <div class="muted" id="arenaSub">5 minutes to vote. First to 3 votes wins.</div>
+          <div class="muted" id="arenaSub">2 minutes to vote. First to 3 wins.</div>
         </div>
         <span class="pill" id="arenaTimer">00:00</span>
       </div>
@@ -1161,7 +1161,20 @@ const closeOpponent = document.getElementById("closeOpponent");
           }
         }
 
-        return clips;
+        const playerClips = clips.filter(clip=>!isNpcClip(clip));
+        const npcClips = clips.filter(isNpcClip);
+        if(!playerClips.length || !npcClips.length) return clips;
+
+        const mixed = [];
+        const npcQueue = [...npcClips];
+        const gap = Math.max(1, Math.ceil(playerClips.length / (npcClips.length + 1)));
+        playerClips.forEach((clip, index)=>{
+          mixed.push(clip);
+          if(npcQueue.length && (index + 1) % gap === 0){
+            mixed.push(npcQueue.shift());
+          }
+        });
+        return mixed.concat(npcQueue);
       },
       async addComment(gruntId, body){
         const text = String(body||"").trim();
@@ -1270,7 +1283,7 @@ const closeOpponent = document.getElementById("closeOpponent");
         return data || null;
       },
       async createBattle(gruntAId, gruntBId){
-  const endsAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+  const endsAt = new Date(Date.now() + 2 * 60 * 1000).toISOString();
 
   const { data, error } = await sb
     .from("battles")
@@ -2405,7 +2418,7 @@ console.log("renderArena battle resolved", battle);
 console.log("renderArena rendering current battle", battle.id);
 
       arenaTitle.textContent = "Current battle";
-      arenaSub.textContent = "5 minutes to vote. First to 3 votes wins.";
+      arenaSub.textContent = "2 minutes to vote. First to 3 wins.";
       arenaTiny.textContent = "Live battle: vote for the grunt that wins the round. If time runs out, most votes wins.";
 
       const left = makeArenaSide(a, "Archduke of Air biscuits");
