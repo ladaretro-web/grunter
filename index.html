@@ -181,12 +181,15 @@
 
     .section-title{
       font-family: "Press Start 2P", Orbitron, system-ui, sans-serif;
-      font-size:12px;
+      font-size:15px;
       letter-spacing:.10em;
       text-transform:uppercase;
-      margin:16px 4px 8px;
-      color:rgba(242,245,255,.92);
+      margin:22px 4px 10px;
+      color:#22d3ee;
+      text-shadow:0 0 10px rgba(34,211,238,.55), 0 0 24px rgba(181,108,255,.35);
     }
+
+    .section-title::before{content:"// ";color:var(--hot);text-shadow:0 0 12px rgba(255,79,216,.55)}
 
     .recordWrap{display:grid;gap:10px;justify-items:center}
 
@@ -518,6 +521,27 @@
 
     .rightButtons{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .danger{border-color:rgba(255,79,216,.35)}
+
+    @keyframes arenaPulse{
+      0%,100%{box-shadow:0 12px 34px rgba(0,0,0,.45),0 0 24px rgba(34,211,238,.20),0 0 0 1px rgba(34,211,238,.30) inset}
+      50%{box-shadow:0 16px 42px rgba(0,0,0,.52),0 0 36px rgba(255,79,216,.35),0 0 0 2px rgba(255,79,216,.45) inset}
+    }
+
+    #arenaCard{
+      border-color:rgba(34,211,238,.38);
+      box-shadow:0 14px 38px rgba(0,0,0,.48),0 0 28px rgba(34,211,238,.14);
+    }
+    #arenaCard.arenaDemo{
+      border-color:rgba(34,211,238,.52);
+      background:linear-gradient(180deg, rgba(9,18,36,.96), rgba(12,9,26,.94));
+    }
+    #arenaCard.arenaLive{
+      border-color:rgba(255,79,216,.75);
+      background:linear-gradient(180deg, rgba(35,8,32,.98), rgba(13,8,24,.96));
+      animation:arenaPulse 1.15s infinite;
+    }
+    #arenaCard.arenaLive #arenaTitle{color:#fff;text-shadow:0 0 12px rgba(255,79,216,.7),0 0 30px rgba(255,79,216,.35)}
+    #arenaCard.arenaLive #arenaTimer{border-color:rgba(255,79,216,.55);background:rgba(255,79,216,.16)}
   </style>
 </head>
 
@@ -576,7 +600,7 @@
       <div class="row space">
         <div>
           <div class="name" id="arenaTitle">The dust has settled. Who is next?</div>
-          <div class="muted" id="arenaSub">Best of five, first to 3 wins.</div>
+          <div class="muted" id="arenaSub">5 minutes to vote. First to 3 votes wins.</div>
         </div>
         <span class="pill" id="arenaTimer">00:00</span>
       </div>
@@ -967,6 +991,7 @@ const closeOpponent = document.getElementById("closeOpponent");
     const arenaTimer = document.getElementById("arenaTimer");
     const arenaGrid = document.getElementById("arenaGrid");
     const arenaTiny = document.getElementById("arenaTiny");
+    const arenaCard = document.getElementById("arenaCard");
 
     let currentAudioController = null;
 
@@ -1424,6 +1449,11 @@ const closeOpponent = document.getElementById("closeOpponent");
         if(voteLabels[0]) voteLabels[0].textContent = `Demo votes: ${Math.min(3, Math.floor(nextProgress * 4))}`;
         if(voteLabels[1]) voteLabels[1].textContent = `Demo votes: ${Math.min(3, Math.floor(Math.max(0, nextProgress - 0.18) * 4))}`;
       }, 1000);
+    }
+
+    function setArenaMode(mode){
+      arenaCard.classList.toggle("arenaDemo", mode === "demo");
+      arenaCard.classList.toggle("arenaLive", mode === "live");
     }
 
     // ===== Profile UI =====
@@ -2126,10 +2156,12 @@ function stopArenaPoll(){
 
       const waitingMs = state.arena?.activeBattleId && state.arena.waitingSince ? Date.now() - state.arena.waitingSince : 9999;
       if(state.arena?.activeBattleId && waitingMs < 3000){
+        setArenaMode("loading");
         arenaTitle.textContent = "Loading battle...";
         arenaSub.textContent = "Getting the arena ready.";
         arenaTiny.textContent = "";
       }else{
+        setArenaMode("demo");
         arenaTitle.textContent = "Demo battle";
         arenaSub.textContent = "Tap Battle on a grunt in the feed to choose an opponent.";
         arenaTiny.textContent = "This NPC round is only a preview of the battle flow.";
@@ -2137,6 +2169,7 @@ function stopArenaPoll(){
       }
 
       if(!USE_SUPABASE){
+        setArenaMode("demo");
         arenaTitle.textContent = "Battle Arena needs Supabase";
         arenaSub.textContent = "Enable Supabase to test battles with others.";
         arenaTiny.textContent = "";
@@ -2148,6 +2181,7 @@ function stopArenaPoll(){
         battle = await SB.fetchLiveBattle();
       }catch(err){
         console.warn(err);
+        setArenaMode("demo");
         arenaTitle.textContent = "Battle Arena unavailable";
         arenaSub.textContent = "Could not load battles.";
         arenaTiny.textContent = "";
@@ -2161,6 +2195,7 @@ console.log("renderArena battle resolved", battle);
         if(state.arena && state.arena.activeBattleId){
           if(waitingMs < 3000){
             stopArenaPoll();
+            setArenaMode("loading");
             arenaTitle.textContent = "Loading battle...";
             arenaSub.textContent = "Getting the arena ready.";
             arenaTiny.textContent = "";
@@ -2179,6 +2214,7 @@ console.log("renderArena battle resolved", battle);
 
       stopArenaPoll();
       arenaGrid.innerHTML = "";
+      setArenaMode("live");
 
       const endsAt = new Date(battle.ends_at).getTime();
       const battleGrunts = await SB.fetchBattleGrunts(battle);
@@ -2195,6 +2231,7 @@ console.log("renderArena battle resolved", battle);
 
       if(!a || !b){
   stopArenaPoll();
+  setArenaMode("loading");
   arenaTitle.textContent = "Loading battle...";
   arenaSub.textContent = "Getting the battle grunts ready.";
   arenaTiny.textContent = "";
@@ -2206,7 +2243,8 @@ console.log("renderArena battle resolved", battle);
 console.log("renderArena rendering current battle", battle.id);
 
       arenaTitle.textContent = "Current battle";
-      arenaSub.textContent = "Best of five, first to 3 wins.";
+      arenaSub.textContent = "5 minutes to vote. First to 3 votes wins.";
+      arenaTiny.textContent = "Live battle: vote for the grunt that wins the round. If time runs out, most votes wins.";
 
       const left = makeArenaSide(a, "Archduke of Air biscuits");
       const right = makeArenaSide(b, "Baron of Bum Burps");
