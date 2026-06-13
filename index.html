@@ -181,12 +181,12 @@
 
     .section-title{
       font-family: "Press Start 2P", Orbitron, system-ui, sans-serif;
-      font-size:15px;
+      font-size:16px;
       letter-spacing:.10em;
       text-transform:uppercase;
       margin:22px 4px 10px;
-      color:#22d3ee;
-      text-shadow:0 0 10px rgba(34,211,238,.55), 0 0 24px rgba(181,108,255,.35);
+      color:#6ff7ff;
+      text-shadow:0 0 10px rgba(34,211,238,.75), 0 0 24px rgba(181,108,255,.50), 0 0 38px rgba(255,59,59,.18);
     }
 
     .section-title::before{content:"// ";color:var(--hot);text-shadow:0 0 12px rgba(255,79,216,.55)}
@@ -523,25 +523,31 @@
     .danger{border-color:rgba(255,79,216,.35)}
 
     @keyframes arenaPulse{
-      0%,100%{box-shadow:0 12px 34px rgba(0,0,0,.45),0 0 24px rgba(34,211,238,.20),0 0 0 1px rgba(34,211,238,.30) inset}
-      50%{box-shadow:0 16px 42px rgba(0,0,0,.52),0 0 36px rgba(255,79,216,.35),0 0 0 2px rgba(255,79,216,.45) inset}
+      0%,100%{box-shadow:0 14px 38px rgba(0,0,0,.50),0 0 28px rgba(255,59,59,.36),0 0 48px rgba(255,79,216,.24),0 0 0 1px rgba(255,59,59,.52) inset}
+      50%{box-shadow:0 18px 48px rgba(0,0,0,.58),0 0 44px rgba(255,59,59,.60),0 0 74px rgba(255,79,216,.42),0 0 0 2px rgba(255,59,59,.72) inset}
     }
 
     #arenaCard{
-      border-color:rgba(34,211,238,.38);
-      box-shadow:0 14px 38px rgba(0,0,0,.48),0 0 28px rgba(34,211,238,.14);
+      border-color:rgba(255,59,59,.42);
+      box-shadow:0 14px 38px rgba(0,0,0,.48),0 0 26px rgba(255,59,59,.18),0 0 34px rgba(34,211,238,.12);
     }
     #arenaCard.arenaDemo{
-      border-color:rgba(34,211,238,.52);
-      background:linear-gradient(180deg, rgba(9,18,36,.96), rgba(12,9,26,.94));
+      border-color:rgba(255,59,59,.48);
+      background:linear-gradient(180deg, rgba(26,10,28,.97), rgba(12,9,26,.94));
     }
     #arenaCard.arenaLive{
-      border-color:rgba(255,79,216,.75);
-      background:linear-gradient(180deg, rgba(35,8,32,.98), rgba(13,8,24,.96));
+      border-color:rgba(255,59,59,.86);
+      background:linear-gradient(180deg, rgba(54,7,20,.98), rgba(18,6,22,.97));
       animation:arenaPulse 1.15s infinite;
     }
-    #arenaCard.arenaLive #arenaTitle{color:#fff;text-shadow:0 0 12px rgba(255,79,216,.7),0 0 30px rgba(255,79,216,.35)}
-    #arenaCard.arenaLive #arenaTimer{border-color:rgba(255,79,216,.55);background:rgba(255,79,216,.16)}
+    #arenaCard.arenaLive:before{
+      background:
+        radial-gradient(520px 220px at 18% 0%, rgba(255,59,59,.24), transparent 60%),
+        radial-gradient(520px 220px at 80% 12%, rgba(255,79,216,.18), transparent 62%);
+      opacity:1;
+    }
+    #arenaCard.arenaLive #arenaTitle{color:#fff;text-shadow:0 0 12px rgba(255,59,59,.95),0 0 28px rgba(255,79,216,.62),0 0 48px rgba(255,59,59,.38)}
+    #arenaCard.arenaLive #arenaTimer{border-color:rgba(255,59,59,.75);background:rgba(255,59,59,.20);box-shadow:0 0 18px rgba(255,59,59,.35)}
   </style>
 </head>
 
@@ -741,12 +747,16 @@
     const PROFILES_KEY = "grunter_profiles_v1";
     const UID_KEY = "grunter_uid_v5";
     const LAST_ANNOUNCED_BATTLE_KEY = "grunter_last_announce_battle_v1";
+    const LAST_NPC_BATTLE_KEY = "grunter_last_npc_battle_v1";
+    const NPC_AUTO_BATTLE_COOLDOWN_MS = 8 * 60 * 1000;
 
     // ===== Emoji sets =====
     const PROFILE_EMOJIS = ["💨","💀","🤢","😈","🧨"];
     const FEED_REACTIONS = ["💨","😂","😭","🤢","🔥","⚡","😈","🧨"]; // 8 as requested
     const NPC_ARENA = [
       {
+        userId: "10000000-0000-4000-8000-000000000001",
+        gruntId: "20000000-0000-4000-8000-000000000001",
         name: "Air Biscuit",
         title: "Archduke of Air Biscuits",
         emoji: "💨",
@@ -755,6 +765,8 @@
         line: "A suspicious breeze enters the arena."
       },
       {
+        userId: "10000000-0000-4000-8000-000000000002",
+        gruntId: "20000000-0000-4000-8000-000000000002",
         name: "Barking Spider",
         title: "Baron of Barking Spiders",
         emoji: "🕷️",
@@ -763,6 +775,8 @@
         line: "Nobody saw it, everyone heard it."
       },
       {
+        userId: "10000000-0000-4000-8000-000000000003",
+        gruntId: "20000000-0000-4000-8000-000000000003",
         name: "Cheek Squeak",
         title: "Duke of Cheek Squeaks",
         emoji: "😈",
@@ -788,6 +802,14 @@
 function isClipMine(c){
   return c._userId === SB.userId;
 }
+
+    function isNpcUserId(userId){
+      return NPC_ARENA.some(npc=>npc.userId === userId);
+    }
+
+    function isNpcClip(clip){
+      return !!clip && (clip._isNpc || NPC_ARENA.some(npc=>npc.gruntId === clip.id || npc.userId === clip._userId));
+    }
 
     function isProbablyImage(value){
       const v = String(value||"");
@@ -1082,6 +1104,7 @@ const closeOpponent = document.getElementById("closeOpponent");
             duration: (row.duration_ms || 0) / 1000,
             createdAt: new Date(row.created_at).getTime(),
             _userId: row.user_id,
+            _isNpc: isNpcUserId(row.user_id),
             reactions: (()=>{ const r={}; FEED_REACTIONS.forEach(x=>r[x]=0); return r; })(),
             _commentCount: 0,
             _previewComments: []
@@ -1187,6 +1210,35 @@ const closeOpponent = document.getElementById("closeOpponent");
         return clipId;
       },
 
+      async ensureNpcGrunts(){
+        if(!USE_SUPABASE) return;
+        for(const npc of NPC_ARENA){
+          const audioUrl = new URL(npc.audio, location.href).href;
+          const { error:userError } = await sb.from("users").upsert(
+            { id:npc.userId, display_name:npc.name, avatar:npc.emoji },
+            { onConflict:"id" }
+          );
+          if(userError) throw userError;
+
+          const { data:existing, error:findError } = await sb
+            .from("grunts")
+            .select("id")
+            .eq("id", npc.gruntId)
+            .maybeSingle();
+          if(findError) throw findError;
+          if(existing) continue;
+
+          const { error:gruntError } = await sb.from("grunts").insert({
+            id:npc.gruntId,
+            user_id:npc.userId,
+            title:npc.title,
+            audio_path:audioUrl,
+            duration_ms:(npc.duration || 0) * 1000
+          });
+          if(gruntError) throw gruntError;
+        }
+      },
+
       // ===== Battle Arena =====
       async fetchLiveBattle(){
         const { data, error } = await sb
@@ -1197,6 +1249,25 @@ const closeOpponent = document.getElementById("closeOpponent");
           .limit(1);
         if(error) throw error;
         return (data && data[0]) ? data[0] : null;
+      },
+      async fetchRecentBattles(limit = 12){
+        const { data, error } = await sb
+          .from("battles")
+          .select("id, created_at, status, ends_at, grunt_a_id, grunt_b_id, winner_grunt_id")
+          .order("created_at", { ascending:false })
+          .limit(limit);
+        if(error) throw error;
+        return data || [];
+      },
+      async fetchBattleById(battleId){
+        if(!battleId) return null;
+        const { data, error } = await sb
+          .from("battles")
+          .select("id, created_at, status, ends_at, grunt_a_id, grunt_b_id, winner_grunt_id")
+          .eq("id", battleId)
+          .maybeSingle();
+        if(error) throw error;
+        return data || null;
       },
       async createBattle(gruntAId, gruntBId){
   const endsAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
@@ -1817,18 +1888,20 @@ const closeOpponent = document.getElementById("closeOpponent");
       commentsOverlay.classList.add("show");
     }
 
-    sendComment.onclick = async ()=>{
+    async function submitBanter(){
       const t = String(commentInput.value||"").trim();
       if(!t) return;
       if(!isProfileReady(state.profile)){ openProfile(true); return; }
+      const postedClipId = activeClipId;
 
       if(USE_SUPABASE){
         try{
           await SB.upsertMe(state.profile);
-          await SB.addComment(activeClipId, t);
+          await SB.addComment(postedClipId, t);
           commentInput.value = "";
           await refreshFromSupabase();
-          await openComments(activeClipId);
+          commentsOverlay.classList.remove("show");
+          activeClipId = null;
           return;
         }catch(err){
           console.warn(err);
@@ -1836,9 +1909,20 @@ const closeOpponent = document.getElementById("closeOpponent");
           return;
         }
       }
-    };
+    }
 
-    closeComments.onclick = ()=> commentsOverlay.classList.remove("show");
+    sendComment.onclick = submitBanter;
+    commentInput.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        submitBanter();
+      }
+    });
+
+    closeComments.onclick = ()=>{
+      commentsOverlay.classList.remove("show");
+      activeClipId = null;
+    };
     closeOpponent.onclick = () => opponentOverlay.classList.remove("show");
 
 
@@ -1947,6 +2031,8 @@ window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  o
 
   const clips = (state && Array.isArray(state.clips)) ? state.clips : [];
   const challengerId = battleContext && battleContext.challengerGruntId;
+  const challengerClip = clips.find(c=>c.id === challengerId);
+  const challengerIsNpc = isNpcClip(challengerClip);
 
   if (clips.length === 0) {
     opponentList.innerHTML = "<div class='tiny'>No grunts loaded yet. Wait a moment, then try again.</div>";
@@ -1955,12 +2041,12 @@ window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  o
 
   const hint = document.createElement("div");
   hint.className = "tiny";
-  hint.textContent = "Choose the opponent grunt for the next player battle.";
+  hint.textContent = challengerIsNpc ? "Choose a player grunt for this NPC challenge." : "Choose the opponent grunt for the next player battle.";
   opponentList.appendChild(hint);
 
   const map = new Map();
 
-  for (const c of clips.filter(clip=> clip.id !== challengerId)) {
+  for (const c of clips.filter(clip=> clip.id !== challengerId && !(challengerIsNpc && isNpcClip(clip)))) {
     const name = c.userName || c.username || c.name || "Guest";
     if (!map.has(name)) map.set(name, []);
     map.get(name).push(c);
@@ -2109,6 +2195,58 @@ function stopArenaPoll(){
   }
 }
 
+async function maybeStartNpcBattle(){
+  if(!USE_SUPABASE || battleCreateInFlight) return;
+  const last = Number(localStorage.getItem(LAST_NPC_BATTLE_KEY) || 0);
+  if(Date.now() - last < NPC_AUTO_BATTLE_COOLDOWN_MS) return;
+
+  const npcClips = state.clips.filter(isNpcClip);
+  const playerClips = state.clips.filter(clip=>!isNpcClip(clip));
+  if(!npcClips.length || !playerClips.length) return;
+
+  // Keep NPC battles occasional instead of every idle refresh.
+  if(Math.random() > 0.35) return;
+
+  const existing = await SB.fetchLiveBattle();
+  if(existing) return;
+
+  const npcGruntIds = new Set(NPC_ARENA.map(npc=>npc.gruntId));
+  const recentBattles = await SB.fetchRecentBattles();
+  const recentNpcBattle = recentBattles.find(battle=>
+    npcGruntIds.has(battle.grunt_a_id) || npcGruntIds.has(battle.grunt_b_id)
+  );
+  if(recentNpcBattle && Date.now() - new Date(recentNpcBattle.created_at).getTime() < NPC_AUTO_BATTLE_COOLDOWN_MS) return;
+
+  const npc = npcClips[Math.floor(Math.random() * npcClips.length)];
+  const player = playerClips[Math.floor(Math.random() * playerClips.length)];
+  if(!npc || !player || npc.id === player.id) return;
+
+  try{
+    battleCreateInFlight = true;
+    localStorage.setItem(LAST_NPC_BATTLE_KEY, String(Date.now()));
+    state.arena.phase = "active";
+    state.arena.challengerId = npc.id;
+    state.arena.opponentId = player.id;
+    state.arena.waitingSince = Date.now();
+    save();
+
+    const battleRow = await SB.createBattle(npc.id, player.id);
+    state.arena.activeBattleId = battleRow.id;
+    state.arena.waitingSince = null;
+    save();
+    await refreshFromSupabase();
+    scheduleArenaRender();
+  }catch(err){
+    console.warn("NPC battle failed", err);
+    state.arena.phase = "idle";
+    state.arena.activeBattleId = null;
+    state.arena.waitingSince = null;
+    save();
+  }finally{
+    battleCreateInFlight = false;
+  }
+}
+
 function scheduleArenaRender(){
   if(arenaRenderScheduled) return;
   arenaRenderScheduled = true;
@@ -2203,18 +2341,42 @@ console.log("renderArena battle resolved", battle);
             return;
           }
 
+          try{
+            const closedBattle = await SB.fetchBattleById(state.arena.activeBattleId);
+            if(closedBattle && closedBattle.status === "closed"){
+              const closedGrunts = await SB.fetchBattleGrunts(closedBattle);
+              const aClosed = closedGrunts[closedBattle.grunt_a_id];
+              const bClosed = closedGrunts[closedBattle.grunt_b_id];
+              if(!closedBattle.winner_grunt_id){
+                announceIfNew(closedBattle.id, "draw", aClosed, bClosed);
+              }else{
+                const winnerClosed = closedGrunts[closedBattle.winner_grunt_id];
+                if(winnerClosed) announceIfNew(closedBattle.id, "win", winnerClosed, null);
+              }
+            }
+          }catch(err){
+            console.warn("Could not announce closed battle", err);
+          }
+
           state.arena.phase = "idle";
           state.arena.activeBattleId = null;
           state.arena.waitingSince = null;
           save();
 }
 
+        maybeStartNpcBattle();
         return;
       }
 
       stopArenaPoll();
       arenaGrid.innerHTML = "";
       setArenaMode("live");
+      if(state.arena){
+        state.arena.phase = "active";
+        state.arena.activeBattleId = battle.id;
+        state.arena.waitingSince = null;
+        save();
+      }
 
       const endsAt = new Date(battle.ends_at).getTime();
       const battleGrunts = await SB.fetchBattleGrunts(battle);
@@ -2454,6 +2616,7 @@ return;
       // feed
       feed.innerHTML = "";
       state.clips.forEach(c=>{
+        const npcClip = isNpcClip(c);
         const card = document.createElement("div");
         card.className = "card";
         card.id = "clip_" + String(c.id).replaceAll("-","_");
@@ -2464,6 +2627,7 @@ return;
           <div class="avatar">${renderAvatarHtml(c.userAvatar, c.userEmoji)}</div>
           <div style="flex:1">
             <div class="name">${escapeHtml(c.userName)}</div>
+            ${npcClip ? '<div class="tiny">NPC grunt</div>' : ''}
             <div class="muted">${fmtAgo(c.createdAt)} · ${escapeHtml(c.title)}</div>
           </div>
           <div class="pill">${hypeScore(c)} hype</div>
@@ -2617,6 +2781,7 @@ scheduleArenaRender();
           if(isProfileReady(state.profile)){
             await SB.upsertMe(state.profile);
           }
+          await SB.ensureNpcGrunts();
           await refreshFromSupabase();
         }catch(err){
           console.warn(err);
