@@ -296,10 +296,10 @@
       line-height:1.35;
     }
 
-    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px;width:100%}
 
     .chip{
-      display:flex;align-items:center;gap:8px;
+      display:flex;align-items:center;justify-content:center;gap:8px;
       padding:8px 10px;
       border-radius:999px;
       border:1px solid rgba(181,108,255,.28);
@@ -308,6 +308,7 @@
       font-weight:900;
       letter-spacing:.04em;
       cursor:pointer;
+      min-width:0;
       user-select:none;
     }
     .chip .count{font-size:12px;color:var(--muted);font-weight:900}
@@ -503,12 +504,17 @@
       box-shadow: 0 0 18px rgba(34,211,238,.12);
     }
 
-    .miniActionsRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+    .profileSlots{display:grid;gap:8px}
+    .profileSlot{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid rgba(181,108,255,.25);
+      background:rgba(15,11,31,.55);
     }
+    .profileSlot.active{border-color:rgba(34,211,238,.70);box-shadow:0 0 18px rgba(34,211,238,.12)}
+
+    .miniActionsRow{display:grid;gap:10px}
 
     .rightButtons{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
     .danger{border-color:rgba(255,79,216,.35)}
@@ -633,11 +639,15 @@
 
         <div class="row" style="gap:8px;flex-wrap:wrap">
           <button class="btn" id="saveProfile">Save</button>
+          <button class="btn secondary" id="newProfile">New test profile</button>
           <button class="btn ghost" id="clearAvatar">Remove photo</button>
           <span class="pill" id="statsBadge">Wins 0, Losses 0, Draws 0</span>
         </div>
 
-        <div class="tiny">If you upload an image, it will be used everywhere. If not, your emoji will be used everywhere.</div>
+        <div class="muted">Test profiles on this device</div>
+        <div class="profileSlots" id="profileSlots"></div>
+
+        <div class="tiny">Each test profile acts like a different player on this device. If you upload an image, it will be used everywhere. If not, your emoji will be used everywhere.</div>
       </div>
     </div>
   </div>
@@ -704,6 +714,7 @@
     // ===== Local storage keys =====
     const lsKey = "grunter_purple_arcade_v5";
     const PROFILE_KEY = "grunter_profile_v5";
+    const PROFILES_KEY = "grunter_profiles_v1";
     const UID_KEY = "grunter_uid_v5";
     const LAST_ANNOUNCED_BATTLE_KEY = "grunter_last_announce_battle_v1";
 
@@ -716,6 +727,7 @@
         title: "Archduke of Air Biscuits",
         emoji: "💨",
         audio: "npc_air_biscuit.mp3",
+        duration: 15,
         line: "A suspicious breeze enters the arena."
       },
       {
@@ -723,6 +735,7 @@
         title: "Baron of Barking Spiders",
         emoji: "🕷️",
         audio: "npc_barking_spider.mp3",
+        duration: 12,
         line: "Nobody saw it, everyone heard it."
       },
       {
@@ -730,6 +743,7 @@
         title: "Duke of Cheek Squeaks",
         emoji: "😈",
         audio: "npc_cheek_squeak.mp3",
+        duration: 2,
         line: "Small noise, big allegations."
       }
     ];
@@ -813,6 +827,48 @@ function isClipMine(c){
       try{ localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); }catch{}
     }
 
+    function loadProfileList(){
+      try{
+        const raw = localStorage.getItem(PROFILES_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list : [];
+      }catch{
+        return [];
+      }
+    }
+
+    function saveProfileList(list){
+      try{ localStorage.setItem(PROFILES_KEY, JSON.stringify(list)); }catch{}
+    }
+
+    function ensureProfileIdentity(profile){
+      if(!profile) return profile;
+      if(!profile.slotId) profile.slotId = "profile_" + Date.now() + "_" + Math.floor(Math.random()*1000);
+      if(!profile.userId){
+        const storedUid = localStorage.getItem(UID_KEY);
+        profile.userId = storedUid || (crypto.randomUUID ? crypto.randomUUID() : uuidv4());
+      }
+      localStorage.setItem(UID_KEY, profile.userId);
+      return profile;
+    }
+
+    function saveProfileToList(profile){
+      if(!isProfileReady(profile)) return;
+      ensureProfileIdentity(profile);
+      const list = loadProfileList();
+      const clean = {
+        slotId: profile.slotId,
+        userId: profile.userId,
+        name: profile.name,
+        emoji: profile.emoji || "💨",
+        avatarUrl: profile.avatarUrl || null
+      };
+      const index = list.findIndex(p=>p.slotId === clean.slotId);
+      if(index >= 0) list[index] = clean;
+      else list.unshift(clean);
+      saveProfileList(list.slice(0, 8));
+    }
+
     function isProfileReady(profile){
       const n = String(profile?.name||"").trim();
       if(!n) return false;
@@ -849,11 +905,14 @@ window.state = state;
     const pSaved = loadProfile();
     if(pSaved && (!state.profile || !state.profile.name || state.profile.name === "Guest")){
       state.profile = {
+        slotId: pSaved.slotId || null,
+        userId: pSaved.userId || null,
         name: pSaved.name || "",
         emoji: pSaved.emoji || "💨",
         avatarUrl: pSaved.avatarUrl || null
       };
     }
+    state.profile = ensureProfileIdentity(state.profile || { name:"", emoji:"💨", avatarUrl:null });
 
     // ===== UI elements =====
     const feed = document.getElementById("feed");
@@ -873,9 +932,11 @@ window.state = state;
     const nameInput = document.getElementById("nameInput");
     const avatarInput = document.getElementById("avatarInput");
     const saveProfileBtn = document.getElementById("saveProfile");
+    const newProfileBtn = document.getElementById("newProfile");
     const clearAvatar = document.getElementById("clearAvatar");
     const statsBadge = document.getElementById("statsBadge");
     const emojiPickRow = document.getElementById("emojiPickRow");
+    const profileSlots = document.getElementById("profileSlots");
 
 const opponentOverlay = document.getElementById("opponentOverlay");
 const opponentList = document.getElementById("opponentList");
@@ -936,11 +997,12 @@ const closeOpponent = document.getElementById("closeOpponent");
       userId:null,
       bucket:"grunts",
       async ensureUserId(){
-        let uid = localStorage.getItem(UID_KEY);
+        let uid = state.profile?.userId || localStorage.getItem(UID_KEY);
         if(!uid){
           uid = (crypto.randomUUID ? crypto.randomUUID() : uuidv4());
-          localStorage.setItem(UID_KEY, uid);
         }
+        if(state.profile) state.profile.userId = uid;
+        localStorage.setItem(UID_KEY, uid);
         this.userId = uid;
         return uid;
       },
@@ -1286,7 +1348,22 @@ const closeOpponent = document.getElementById("closeOpponent");
 
     function renderNpcArena(){
       arenaGrid.innerHTML = "";
-      NPC_ARENA.forEach(npc=>{
+      const roundMs = 45000;
+      const roundIndex = Math.floor(Date.now() / roundMs);
+      const pairOptions = [[0,1], [1,2], [2,0]];
+      const pair = pairOptions[roundIndex % pairOptions.length];
+      const elapsed = Date.now() % roundMs;
+      const remaining = Math.max(0, Math.ceil((roundMs - elapsed) / 1000));
+      const progress = elapsed / roundMs;
+      const leftVotes = Math.min(3, Math.floor(progress * 4));
+      const rightVotes = Math.min(3, Math.floor(Math.max(0, progress - 0.18) * 4));
+      const leftNpc = NPC_ARENA[pair[0]];
+      const rightNpc = NPC_ARENA[pair[1]];
+      const voteLabels = [];
+
+      arenaTimer.textContent = fmtDur(remaining);
+
+      function makeNpcDemoSide(npc, votes){
         const card = document.createElement("div");
         card.className = "card grid";
 
@@ -1312,9 +1389,41 @@ const closeOpponent = document.getElementById("closeOpponent");
           currentAudioController = player;
         };
         card.appendChild(player.el);
+        const times = player.el.querySelectorAll(".time");
+        if(times[1] && npc.duration) times[1].textContent = fmtDur(npc.duration);
+
+        const fakeVote = document.createElement("div");
+        fakeVote.className = "muted";
+        fakeVote.textContent = `Demo votes: ${votes}`;
+        card.appendChild(fakeVote);
+        voteLabels.push(fakeVote);
+
+        const hint = document.createElement("div");
+        hint.className = "tiny";
+        hint.textContent = "Real votes unlock when two player grunts are battling.";
+        card.appendChild(hint);
 
         arenaGrid.appendChild(card);
-      });
+      }
+
+      makeNpcDemoSide(leftNpc, leftVotes);
+      makeNpcDemoSide(rightNpc, rightVotes);
+
+      arenaPoll = setInterval(()=>{
+        const nextRoundIndex = Math.floor(Date.now() / roundMs);
+        if(nextRoundIndex !== roundIndex){
+          stopArenaPoll();
+          scheduleArenaRender();
+          return;
+        }
+
+        const nextElapsed = Date.now() % roundMs;
+        const nextRemaining = Math.max(0, Math.ceil((roundMs - nextElapsed) / 1000));
+        const nextProgress = nextElapsed / roundMs;
+        arenaTimer.textContent = fmtDur(nextRemaining);
+        if(voteLabels[0]) voteLabels[0].textContent = `Demo votes: ${Math.min(3, Math.floor(nextProgress * 4))}`;
+        if(voteLabels[1]) voteLabels[1].textContent = `Demo votes: ${Math.min(3, Math.floor(Math.max(0, nextProgress - 0.18) * 4))}`;
+      }, 1000);
     }
 
     // ===== Profile UI =====
@@ -1334,9 +1443,69 @@ const closeOpponent = document.getElementById("closeOpponent");
       });
     }
 
+    function renderProfileSlots(){
+      if(!profileSlots) return;
+      const list = loadProfileList();
+      profileSlots.innerHTML = "";
+
+      if(!list.length){
+        const empty = document.createElement("div");
+        empty.className = "tiny";
+        empty.textContent = "Save this profile to add it here. Use New test profile to create another tester.";
+        profileSlots.appendChild(empty);
+        return;
+      }
+
+      list.forEach(profile=>{
+        const row = document.createElement("div");
+        row.className = "profileSlot" + (profile.slotId === state.profile.slotId ? " active" : "");
+
+        const left = document.createElement("div");
+        left.className = "row";
+        left.style.flex = "1";
+        left.innerHTML = `
+          <div class="avatar">${renderAvatarHtml(profile.avatarUrl, profile.emoji)}</div>
+          <div>
+            <div class="name">${escapeHtml(profile.name)}</div>
+            <div class="tiny">${profile.slotId === state.profile.slotId ? "Current tester" : "Tap switch to test as this player"}</div>
+          </div>
+        `;
+
+        const switchBtn = document.createElement("button");
+        switchBtn.type = "button";
+        switchBtn.className = "btn ghost";
+        switchBtn.textContent = profile.slotId === state.profile.slotId ? "Active" : "Switch";
+        switchBtn.disabled = profile.slotId === state.profile.slotId;
+        switchBtn.onclick = async ()=>{
+          saveProfileToList(state.profile);
+          state.profile = ensureProfileIdentity({ ...profile });
+          localStorage.setItem(UID_KEY, state.profile.userId);
+          SB.userId = state.profile.userId;
+          saveProfile(state.profile);
+          save();
+          nameInput.value = state.profile.name || "";
+          renderEmojiPicker();
+          renderProfileSlots();
+          if(USE_SUPABASE){
+            try{
+              await SB.upsertMe(state.profile);
+              await refreshFromSupabase();
+            }catch(err){
+              console.warn(err);
+            }
+          }
+          render();
+        };
+
+        row.append(left, switchBtn);
+        profileSlots.appendChild(row);
+      });
+    }
+
     function openProfile(force=false){
       nameInput.value = state.profile.name || "";
       renderEmojiPicker();
+      renderProfileSlots();
       profileOverlay.classList.add("show");
       if(force){
         closeProfile.style.display = "none";
@@ -1348,10 +1517,32 @@ const closeOpponent = document.getElementById("closeOpponent");
     btnProfile.onclick = ()=> openProfile(false);
     closeProfile.onclick = ()=> profileOverlay.classList.remove("show");
 
+    newProfileBtn.onclick = ()=>{
+      saveProfileToList(state.profile);
+      const count = loadProfileList().length + 1;
+      state.profile = ensureProfileIdentity({
+        slotId: "profile_" + Date.now(),
+        userId: (crypto.randomUUID ? crypto.randomUUID() : uuidv4()),
+        name: "",
+        emoji: PROFILE_EMOJIS[count % PROFILE_EMOJIS.length] || "💨",
+        avatarUrl: null
+      });
+      SB.userId = state.profile.userId;
+      saveProfile(state.profile);
+      save();
+      nameInput.value = "";
+      avatarInput.value = "";
+      renderEmojiPicker();
+      renderProfileSlots();
+      render();
+    };
+
     clearAvatar.onclick = ()=>{
       state.profile.avatarUrl = null;
       saveProfile(state.profile);
+      saveProfileToList(state.profile);
       save();
+      renderProfileSlots();
       render();
       alert("Avatar photo removed");
     };
@@ -1422,6 +1613,7 @@ const closeOpponent = document.getElementById("closeOpponent");
       }
 
       saveProfile(state.profile);
+      saveProfileToList(state.profile);
       save();
 
       if(USE_SUPABASE){
@@ -1429,6 +1621,7 @@ const closeOpponent = document.getElementById("closeOpponent");
         await refreshFromSupabase();
       }
 
+      renderProfileSlots();
       profileOverlay.classList.remove("show");
       render();
     };
@@ -1723,21 +1916,35 @@ window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  o
   
 
   const clips = (state && Array.isArray(state.clips)) ? state.clips : [];
+  const challengerId = battleContext && battleContext.challengerGruntId;
 
   if (clips.length === 0) {
     opponentList.innerHTML = "<div class='tiny'>No grunts loaded yet. Wait a moment, then try again.</div>";
     return;
   }
 
+  const hint = document.createElement("div");
+  hint.className = "tiny";
+  hint.textContent = "Choose the opponent grunt for the next player battle.";
+  opponentList.appendChild(hint);
+
   const map = new Map();
 
-  for (const c of clips) {
+  for (const c of clips.filter(clip=> clip.id !== challengerId)) {
     const name = c.userName || c.username || c.name || "Guest";
     if (!map.has(name)) map.set(name, []);
     map.get(name).push(c);
   }
 
   const groups = Array.from(map.entries());
+
+  if(groups.length === 0){
+    const empty = document.createElement("div");
+    empty.className = "tiny";
+    empty.textContent = "No opponent grunts yet. Record another profile's grunt first, then try Battle again.";
+    opponentList.appendChild(empty);
+    return;
+  }
 
   groups.forEach(([name, list]) => {
     const latest = list[0];
@@ -1761,7 +1968,7 @@ window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  o
     avatar.innerHTML = renderAvatarHtml(latest.userAvatar, latest.userEmoji);
 
     const text = document.createElement("div");
-    text.innerHTML = `<div class="name">${escapeHtml(name)}</div><div class="muted">Tap to select</div>`;
+    text.innerHTML = `<div class="name">${escapeHtml(name)}</div><div class="muted">${escapeHtml(latest.title || "Latest grunt")}</div>`;
 
 
     left.appendChild(avatar);
@@ -1803,6 +2010,7 @@ window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  o
 
     state.arena.phase = "creating";
     state.arena.activeBattleId = null;
+    state.arena.waitingSince = Date.now();
     state.arena.challengerId = challengerId;
     state.arena.opponentId = opponentId;
     save();
@@ -1818,6 +2026,7 @@ window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  o
 
     state.arena.phase = "active";
     state.arena.activeBattleId = battleRow.id;
+    state.arena.waitingSince = null;
     save();
 
     await refreshFromSupabase();
@@ -1827,6 +2036,7 @@ window.openOpponentPicker = function openOpponentPicker(battleContext = {}) {  o
 
     state.arena.phase = "idle";
     state.arena.activeBattleId = null;
+    state.arena.waitingSince = null;
     save();
 
     alert("Battle failed. Open console to see the error details.");
@@ -1873,7 +2083,7 @@ function scheduleArenaRender(){
   if(arenaRenderScheduled) return;
   arenaRenderScheduled = true;
 
-  requestAnimationFrame(async ()=>{
+  setTimeout(async ()=>{
     arenaRenderScheduled = false;
     if(arenaRenderRunning) return;
 
@@ -1884,7 +2094,7 @@ function scheduleArenaRender(){
     }finally{
       arenaRenderRunning = false;
     }
-  });
+  }, 0);
 }
 
 
@@ -1914,6 +2124,18 @@ function stopArenaPoll(){
       arenaGrid.innerHTML = "";
       arenaTimer.textContent = "00:00";
 
+      const waitingMs = state.arena?.activeBattleId && state.arena.waitingSince ? Date.now() - state.arena.waitingSince : 9999;
+      if(state.arena?.activeBattleId && waitingMs < 3000){
+        arenaTitle.textContent = "Loading battle...";
+        arenaSub.textContent = "Getting the arena ready.";
+        arenaTiny.textContent = "";
+      }else{
+        arenaTitle.textContent = "Demo battle";
+        arenaSub.textContent = "Tap Battle on a grunt in the feed to choose an opponent.";
+        arenaTiny.textContent = "This NPC round is only a preview of the battle flow.";
+        renderNpcArena();
+      }
+
       if(!USE_SUPABASE){
         arenaTitle.textContent = "Battle Arena needs Supabase";
         arenaSub.textContent = "Enable Supabase to test battles with others.";
@@ -1937,20 +2159,26 @@ console.log("renderArena battle resolved", battle);
       if(!battle){
 
         if(state.arena && state.arena.activeBattleId){
-  stopArenaPoll();
-  arenaTitle.textContent = "Loading battle...";
-  arenaSub.textContent = "Getting the arena ready.";
-  arenaTiny.textContent = "";
-  setTimeout(()=> scheduleArenaRender(), 400);
-  return;
+          if(waitingMs < 3000){
+            stopArenaPoll();
+            arenaTitle.textContent = "Loading battle...";
+            arenaSub.textContent = "Getting the arena ready.";
+            arenaTiny.textContent = "";
+            setTimeout(()=> scheduleArenaRender(), 400);
+            return;
+          }
+
+          state.arena.phase = "idle";
+          state.arena.activeBattleId = null;
+          state.arena.waitingSince = null;
+          save();
 }
 
-        arenaTitle.textContent = "The dust has settled. Who is next?";
-        arenaSub.textContent = "Best of five, first to 3 wins.";
-        arenaTiny.textContent = "The NPCs are warming up the room.";
-        renderNpcArena();
         return;
       }
+
+      stopArenaPoll();
+      arenaGrid.innerHTML = "";
 
       const endsAt = new Date(battle.ends_at).getTime();
       const battleGrunts = await SB.fetchBattleGrunts(battle);
@@ -2012,6 +2240,10 @@ console.log("renderArena rendering current battle", battle.id);
             await SB.closeBattleAsWinner(battle.id, winner.id);
             announceIfNew(battle.id, "win", winner, null);
           }
+          state.arena.phase = "idle";
+          state.arena.activeBattleId = null;
+          state.arena.waitingSince = null;
+          save();
           if (arenaPoll) {
   clearInterval(arenaPoll);
   arenaPoll = null;
